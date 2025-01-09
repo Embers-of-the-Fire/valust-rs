@@ -1,0 +1,39 @@
+#[test]
+fn real_world_test() -> Result<(), Box<dyn std::error::Error>> {
+    use valust::Validate;
+    use valust_derive::Valust;
+
+    #[derive(Debug, Valust, PartialEq)]
+    #[forward_derive(Debug)]
+    #[rename(UncheckedUsername)]
+    pub struct Username(
+        #[trans(String => _0.trim().to_owned())]
+        #[valid((!_0.is_empty(), "username must not be empty"))]
+        pub String,
+    );
+
+    #[derive(Debug, Valust, PartialEq)]
+    #[forward_derive(Debug)]
+    #[post(user_id + (username.0.len() as u32) == magic_number)]
+    pub struct UserProfile {
+        pub user_id: u32,
+        #[forward(UncheckedUsername)]
+        pub username: Username,
+        pub magic_number: u32,
+    }
+
+    let raw_profile = RawUserProfile {
+        user_id: 10,
+        username: UncheckedUsername("  Foo  ".into()),
+        magic_number: 13,
+    };
+
+    let profile = raw_profile.validate().expect("Check failed");
+    assert_eq!(profile, UserProfile {
+        user_id: 10,
+        username: Username("Foo".into()),
+        magic_number: 13
+    });
+
+    Ok(())
+}

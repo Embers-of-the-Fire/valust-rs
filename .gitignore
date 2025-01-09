@@ -1,0 +1,12 @@
+# rust deps & build
+
+target/
+
+# IDE config
+
+.idea/
+.vscode/
+
+# test output
+
+test.out.*
