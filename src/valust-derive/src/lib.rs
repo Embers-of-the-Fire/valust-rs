@@ -1,5 +1,5 @@
 //! Derive macro implementation for `Valust`.
-//! 
+//!
 //! For full documentation, see the README file.
 
 mod config;
@@ -26,7 +26,7 @@ fn debug(_name: &str, tt: TokenStream) -> TokenStream {
 }
 
 /// Main entry point for the `Valust` macro.
-/// 
+///
 /// For full documentation, see the crates's README file.
 #[proc_macro_derive(
     Valust,

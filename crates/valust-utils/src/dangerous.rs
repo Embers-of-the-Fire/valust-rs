@@ -37,9 +37,9 @@ impl<T, E: Debug> Unwrap for Result<T, E> {
 }
 
 /// Unwrap an `Option` or `Result`.
-/// 
+///
 /// This might cause a panic, use carefully.
-/// 
+///
 /// ```rust,ignore
 /// struct MustBeSome(
 ///     #[trans(Option<i32> => fn(unwrap))]
@@ -51,9 +51,9 @@ pub fn unwrap<T: Unwrap>(t: T) -> T::Out {
 }
 
 /// Unwrap an `Option` or `Result` with a custom message.
-/// 
+///
 /// This might cause a panic, use carefully.
-/// 
+///
 /// ```rust,ignore
 /// struct MustBeSome(
 ///     #[trans(Option<i32> => fn(expect("must be some")))]
