@@ -2,7 +2,6 @@
 name = "valust"
 version = "0.1.0"
 edition = "2021"
-readme = "../README.md"
 
 [dependencies]
 valust-derive = { workspace = true, optional = true }
@@ -10,3 +9,6 @@ valust-derive = { workspace = true, optional = true }
 [features]
 default = ["derive"]
 derive = ["valust-derive"]
+
+[lints]
+workspace = true

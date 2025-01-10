@@ -1,6 +1,10 @@
 # Valust - Validator for Rust
 
-For macro-level documentation, see [`valust-derive`](./src/valust-derive/README.md).
+`Valust` aims to provide a user-friendly, auto-generated data validation tool.
+
+By leveraging Rust's powerful procedural macro system, `valust` can
+automatically generate everything you need for data validation with just a few
+simple attributes added to your data structures.
 
 ## Example
 
@@ -41,3 +45,14 @@ assert_eq!(profile, UserProfile {
     magic_number: 13
 });
 ```
+
+## Project Structure
+
+### Core
+
+- [`valust`](./src/valust/README.md): Main crate, exposing fundamental traits (`trait Validate`) and error types.
+- [`valust-derive`](./src/valust-derive/README.md): Derive macro for creating a validate-able struct.
+
+## External Tools & Utilities
+
+- [`valust-utils`](./crates/valust-utils/README.md): Utilities that might be used when defining validators.

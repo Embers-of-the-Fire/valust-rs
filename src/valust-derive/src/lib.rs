@@ -25,6 +25,9 @@ fn debug(_name: &str, tt: TokenStream) -> TokenStream {
     tt
 }
 
+/// Main entry point for the `Valust` macro.
+/// 
+/// For full documentation, see the crates's README file.
 #[proc_macro_derive(
     Valust,
     attributes(valid, trans, forward, pre, post, rename, forward_derive, display)

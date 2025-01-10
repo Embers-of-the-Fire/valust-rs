@@ -4,7 +4,7 @@ resolver = "2"
 
 [workspace.dependencies]
 # 3rd-party dependencies
-syn = { version = "2.0.95" }
+syn = { version = "2.0.96" }
 quote = { version = "1.0.38" }
 proc-macro2 = { version = "1.0.92" }
 either = { version = "1.13.0" }
@@ -14,3 +14,6 @@ sealed = { version = "0.6.0" }
 valust = { path = "src/valust" }
 valust-derive = { path = "src/valust-derive" }
 valust-utils = { path = "crates/valust-utils" }
+
+[workspace.lints.rust]
+missing_docs = "deny"
