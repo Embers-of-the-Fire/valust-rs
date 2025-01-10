@@ -1,10 +1,12 @@
 //! Human-readable error produced by `valust`.
 
+pub mod display;
 pub mod transform;
 pub mod validate;
 
-use std::fmt::{Debug, Display};
+use std::fmt::{self, Debug, Display, Write};
 
+use sealed::sealed;
 use transform::TransformError;
 use validate::ValidateError;
 
@@ -64,5 +66,15 @@ impl ValidationError {
                 x.path = format!("{}.{}", parent, x.path);
                 x
             }));
+    }
+}
+
+#[sealed]
+impl display::ErrorDisplay for ValidationError {
+    fn full_display(&self, w: &mut impl Write) -> fmt::Result {
+        self.validates.iter().try_for_each(|t| t.full_display(w))?;
+        self.transforms.iter().try_for_each(|t| t.full_display(w))?;
+
+        Ok(())
     }
 }

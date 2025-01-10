@@ -12,6 +12,7 @@ repository.workspace = true
 categories.workspace = true
 
 [dependencies]
+sealed = { workspace = true }
 valust-derive = { workspace = true, optional = true }
 
 [features]

@@ -1,6 +1,8 @@
 //! Validate errors.
 
-use std::fmt::{Display, Formatter};
+use std::fmt::{self, Display, Formatter, Write};
+
+use sealed::sealed;
 
 use super::ErrorShow;
 
@@ -35,5 +37,27 @@ pub struct ValidateFail;
 impl Display for ValidateFail {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "validate expression evaluate to `false`")
+    }
+}
+
+#[sealed]
+impl crate::error::display::ErrorDisplay for ValidateError {
+    fn full_display(&self, w: &mut impl Write) -> fmt::Result {
+        if let Some(msg) = self.message {
+            writeln!(w, "Validate error: {}", msg)?;
+        } else {
+            writeln!(w, "Validate error:")?;
+        }
+        writeln!(w, "Cause: {}", self.cause)?;
+        writeln!(
+            w,
+            "Value: {}: {} = {}",
+            self.field, self.type_name, self.value
+        )?;
+        writeln!(w, "Validator: {}", self.expression)?;
+        writeln!(w, "Path: {}", self.path)?;
+        writeln!(w)?;
+
+        Ok(())
     }
 }

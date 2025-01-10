@@ -1,5 +1,9 @@
 //! Transform errors.
 
+use std::fmt::{self, Write};
+
+use sealed::sealed;
+
 use super::ErrorShow;
 
 #[derive(Debug)]
@@ -21,4 +25,30 @@ pub struct TransformError {
     pub source_type_name: &'static str,
     /// The name of the target type involved in the transformation.
     pub target_type_name: &'static str,
+}
+
+#[sealed]
+impl crate::error::display::ErrorDisplay for TransformError {
+    fn full_display(&self, w: &mut impl Write) -> fmt::Result {
+        if let Some(msg) = self.message {
+            writeln!(w, "Transform error: {}", msg)?;
+        } else {
+            writeln!(w, "Transform error:")?;
+        }
+        writeln!(w, "Cause: {}", self.cause)?;
+        writeln!(
+            w,
+            "Value: {}: {} = {}",
+            self.field, self.source_type_name, self.value
+        )?;
+        writeln!(
+            w,
+            "Transformer: ({} => {}) {}",
+            self.source_type_name, self.target_type_name, self.expression
+        )?;
+        writeln!(w, "Path: {}", self.path)?;
+        writeln!(w)?;
+
+        Ok(())
+    }
 }

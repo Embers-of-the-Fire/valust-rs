@@ -1,5 +1,6 @@
 #![allow(unused_comparisons, clippy::absurd_extreme_comparisons, dead_code)]
 
+use valust::error::display::ErrorDisplay;
 use valust_derive::Valust;
 
 #[test]
@@ -44,12 +45,12 @@ fn test_nested() {
         pub extra: u32,
     }
 
-    println!(
-        "{:#?}",
-        RawOuter {
-            inner: RawInner { code: 10.0 },
-            extra: "  1".to_owned(),
-        }
-        .validate()
-    );
+    let out = RawOuter {
+        inner: RawInner { code: 10.0 },
+        extra: "  1a".to_owned(),
+    }
+    .validate();
+    println!("{:#?}\n", out);
+    let err = out.unwrap_err();
+    println!("{}", err.full_stringify());
 }
