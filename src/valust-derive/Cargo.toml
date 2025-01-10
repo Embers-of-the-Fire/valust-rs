@@ -1,7 +1,14 @@
 [package]
 name = "valust-derive"
-version = "0.1.0"
-edition = "2021"
+keywords = ["validator", "data", "macro", "derive"]
+description = "A derive macro for the Valust crate"
+
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+categories.workspace = true
 
 [lib]
 proc-macro = true

@@ -1,7 +1,14 @@
 [package]
 name = "valust"
-version = "0.1.0"
-edition = "2021"
+keywords = ["validator", "data"]
+description = "A data validation library for Rust"
+
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+categories.workspace = true
 
 [dependencies]
 valust-derive = { workspace = true, optional = true }

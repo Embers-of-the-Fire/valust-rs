@@ -2,6 +2,15 @@
 members = ["src/valust", "src/valust-derive", "tests", "crates/valust-utils"]
 resolver = "2"
 
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+authors = ["Embers-of-the-Fire <stellarishs@163.com>"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/Embers-of-the-Fire/valust-rs"
+categories = ["config", "data-structures", "development-tools::debugging", "rust-patterns"]
+
 [workspace.dependencies]
 # 3rd-party dependencies
 syn = { version = "2.0.96" }
@@ -11,9 +20,9 @@ either = { version = "1.13.0" }
 sealed = { version = "0.6.0" }
 
 # Internal dependencies
-valust = { path = "src/valust" }
-valust-derive = { path = "src/valust-derive" }
-valust-utils = { path = "crates/valust-utils" }
+valust = { path = "src/valust", version = "0.1.0"}
+valust-derive = { path = "src/valust-derive", version = "0.1.0"}
+valust-utils = { path = "crates/valust-utils", version = "0.1.0"}
 
 [workspace.lints.rust]
 missing_docs = "deny"
