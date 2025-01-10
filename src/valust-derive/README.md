@@ -111,11 +111,11 @@ impl ::valust::Validate<Inner> for RawInner {
             _valust_error: &mut ::valust::error::ValidationError,
         ) -> ::std::option::Option<f64> {
             if !(code > 10.0) {
-                _valust_error.push_validate_error(::valust::error::ValidateError {
+                _valust_error.push_validate_error(::valust::error::validate::ValidateError {
                     field: "code",
                     path: format!("{}", "code"),
                     value: format!("(f64) {:?}", code),
-                    cause: ::std::boxed::Box::new(::valust::error::ValidateFail),
+                    cause: ::std::boxed::Box::new(::valust::validate::error::validate::ValidateFail),
                     message: ::std::option::Option::None,
                     expression: "code > 10.0",
                     type_name: "f64",
@@ -172,7 +172,7 @@ impl ::valust::Validate<Outer> for RawOuter {
                 Ok(value) => value,
                 Err(__valust_err_extra) => {
                     _valust_error.push_transform_error(
-                        ::valust::error::TransformError {
+                        ::valust::error::transform::TransformError {
                             field: "extra",
                             path: format!("{}", "extra"),
                             value: format!("(String) {:?}", __format_err_clone_extra),
