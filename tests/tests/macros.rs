@@ -30,14 +30,13 @@ fn test_nested() {
     #[forward_derive(Debug)]
     pub struct Inner {
         #[display = true]
-        #[valid(code > 10.0)]
+        #[valid((code > 10.0, "code must be greater than 10.0"))]
         pub code: f64,
     }
 
     #[derive(Debug, Valust)]
     #[forward_derive(Debug)]
     pub struct Outer {
-        // #[forward(InnerPre)]
         #[forward]
         pub inner: Inner,
         #[trans(String => extra.trim())]
@@ -53,4 +52,5 @@ fn test_nested() {
     println!("{:#?}\n", out);
     let err = out.unwrap_err();
     println!("{}", err.full_stringify());
+    println!("{}", err.brief_stringify());
 }

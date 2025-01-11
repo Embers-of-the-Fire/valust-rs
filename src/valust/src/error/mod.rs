@@ -77,4 +77,13 @@ impl display::ErrorDisplay for ValidationError {
 
         Ok(())
     }
+
+    fn brief_display(&self, w: &mut impl Write) -> fmt::Result {
+        self.validates.iter().try_for_each(|t| t.brief_display(w))?;
+        self.transforms
+            .iter()
+            .try_for_each(|t| t.brief_display(w))?;
+
+        Ok(())
+    }
 }

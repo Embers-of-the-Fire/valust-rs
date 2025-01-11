@@ -60,4 +60,15 @@ impl crate::error::display::ErrorDisplay for ValidateError {
 
         Ok(())
     }
+
+    fn brief_display(&self, w: &mut impl Write) -> fmt::Result {
+        write!(w, "Validate error: ")?;
+        if let Some(msg) = self.message {
+            writeln!(w, "{}", msg)?;
+        } else {
+            writeln!(w, "{}", self.cause)?;
+        }
+
+        Ok(())
+    }
 }

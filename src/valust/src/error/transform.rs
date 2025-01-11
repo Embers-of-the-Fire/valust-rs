@@ -51,4 +51,15 @@ impl crate::error::display::ErrorDisplay for TransformError {
 
         Ok(())
     }
+
+    fn brief_display(&self, w: &mut impl Write) -> fmt::Result {
+        write!(w, "Transform error: ")?;
+        if let Some(msg) = self.message {
+            writeln!(w, "{}", msg)?;
+        } else {
+            writeln!(w, "{}", self.cause)?;
+        }
+
+        Ok(())
+    }
 }
