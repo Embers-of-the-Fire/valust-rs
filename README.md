@@ -53,6 +53,6 @@ assert_eq!(profile, UserProfile {
 - [`valust`](./src/valust/README.md): Main crate, exposing fundamental traits (`trait Validate`) and error types.
 - [`valust-derive`](./src/valust-derive/README.md): Derive macro for creating a validate-able struct.
 
-## External Tools & Utilities
+### External Tools & Utilities
 
 - [`valust-utils`](./crates/valust-utils/README.md): Utilities that might be used when defining validators.
