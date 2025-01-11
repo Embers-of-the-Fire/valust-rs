@@ -3,7 +3,7 @@
 use std::str::FromStr;
 
 /// Parses a string slice into the specified type `F`.
-/// 
+///
 /// ```rust,ignore
 /// #[derive(Valust)]
 /// struct Stringify {
@@ -16,7 +16,7 @@ pub fn parse_to<F: FromStr>(s: impl AsRef<str>) -> Result<F, F::Err> {
 }
 
 /// Converts a value of type `F` into type `T`.
-/// 
+///
 /// ```rust,ignore
 /// #[derive(Valust)]
 /// struct Stringify {
@@ -29,7 +29,7 @@ pub fn into<F: Into<T>, T>(f: F) -> T {
 }
 
 /// Tries to convert a value of type `F` into type `T`.
-/// 
+///
 /// ```rust,ignore
 /// #[derive(Valust)]
 /// struct Stringify {

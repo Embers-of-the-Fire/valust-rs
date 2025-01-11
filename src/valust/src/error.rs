@@ -69,7 +69,7 @@ pub struct ValidateError {
     /// The path to the field that caused the error.
     pub path: String,
     /// The value that caused the error.
-    /// 
+    ///
     /// The value is formatted in the macro-generated code, and you can modify the
     /// behavior by configuring the derive-macro.
     pub value: String,
@@ -122,7 +122,7 @@ pub struct TransformError {
 #[derive(Debug, Clone)]
 pub struct CustomError(
     /// A static string slice that describes the error.
-    pub &'static str
+    pub &'static str,
 );
 
 impl Display for CustomError {
