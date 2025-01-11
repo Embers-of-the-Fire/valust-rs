@@ -82,7 +82,6 @@ pub struct Inner {
 #[derive(Debug, Valust)]
 #[forward_derive(Debug)]
 pub struct Outer {
-    // #[forward(InnerPre)]
     #[forward]
     pub inner: Inner,
     #[trans(String => extra.trim())]
