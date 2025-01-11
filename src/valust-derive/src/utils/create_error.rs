@@ -18,7 +18,7 @@ pub fn create_validate_error(
     let cause = if let Some(cause) = cause {
         quote! { #cause }
     } else {
-        quote! { ::valust::error::ValidateFail }
+        quote! { ::valust::error::validate::ValidateFail }
     };
     let message = message
         .map(|m| quote! { ::std::option::Option::Some(#m) })
@@ -35,7 +35,7 @@ pub fn create_validate_error(
 
     quote! {
         #error_ident.push_validate_error(
-            ::valust::error::ValidateError {
+            ::valust::error::validate::ValidateError {
                 field: #field_text,
                 path: format!("{}", #field_text),
                 value: #value_format,
@@ -56,7 +56,7 @@ pub fn create_meta_validate_error(
     let cause = if let Some(cause) = cause {
         quote! { #cause }
     } else {
-        quote! { ::valust::error::ValidateFail }
+        quote! { ::valust::error::validate::ValidateFail }
     };
     let message = message
         .map(|m| quote! { ::std::option::Option::Some(#m) })
@@ -64,7 +64,7 @@ pub fn create_meta_validate_error(
 
     quote! {
         #error_ident.push_validate_error(
-            ::valust::error::ValidateError {
+            ::valust::error::validate::ValidateError {
                 field: "<meta>",
                 path: format!("<meta>"),
                 value: format!("<meta>"),
@@ -109,7 +109,7 @@ pub fn create_transform_error(
 
     let expanded = quote! {
         #error_ident.push_transform_error(
-            ::valust::error::TransformError {
+            ::valust::error::transform::TransformError {
                 field: #field_text,
                 path: format!("{}", #field_text),
                 value: #value_format,
