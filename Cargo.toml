@@ -3,7 +3,7 @@ members = ["src/valust", "src/valust-derive", "tests", "crates/valust-utils"]
 resolver = "2"
 
 [workspace.package]
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 
 authors = ["Embers-of-the-Fire <stellarishs@163.com>"]
@@ -20,9 +20,9 @@ either = { version = "1.13.0" }
 sealed = { version = "0.6.0" }
 
 # Internal dependencies
-valust = { path = "src/valust", version = "0.1.0"}
-valust-derive = { path = "src/valust-derive", version = "0.1.0"}
-valust-utils = { path = "crates/valust-utils", version = "0.1.0"}
+valust = { path = "src/valust", version = "0.2.0"}
+valust-derive = { path = "src/valust-derive", version = "0.2.0"}
+valust-utils = { path = "crates/valust-utils", version = "0.2.0"}
 
 [workspace.lints.rust]
 missing_docs = "deny"
