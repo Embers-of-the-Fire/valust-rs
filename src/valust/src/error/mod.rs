@@ -27,6 +27,9 @@ pub struct ValidationError {
     pub transforms: Vec<TransformError>,
 }
 
+/// Type alias for `Result<ValidationError>`.
+pub type ValidationResult<T> = Result<T, ValidationError>;
+
 impl ValidationError {
     /// Create an empty error set.
     pub fn new() -> Self {
