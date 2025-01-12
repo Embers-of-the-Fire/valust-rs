@@ -1,6 +1,6 @@
 //! Validate errors.
 
-use std::fmt::{self, Display, Formatter, Write};
+use std::fmt::{self, Write};
 
 use sealed::sealed;
 
@@ -20,24 +20,14 @@ pub struct ValidateError {
     pub value: String,
     /// The underlying cause of the error, implementing the `ErrorShow` trait.
     ///
-    /// This will fall back to [`ValidateFail`] if the validator simply evaluates to `false`.
-    pub cause: Box<dyn ErrorShow + 'static>,
+    /// If there's no error found (e.g. the value is simply invalid), then the field will be `None`.
+    pub cause: Option<Box<dyn ErrorShow + 'static>>,
     /// An optional message providing additional information about the error.
     pub message: Option<&'static str>,
     /// The expression that was evaluated and caused the error.
     pub expression: &'static str,
     /// he type name of the value that caused the error.
     pub type_name: &'static str,
-}
-
-/// A placeholder type for validators evaluating to `false`.
-#[derive(Debug, Clone, Copy)]
-pub struct ValidateFail;
-
-impl Display for ValidateFail {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "validate expression evaluate to `false`")
-    }
 }
 
 #[sealed]
@@ -48,7 +38,9 @@ impl crate::error::display::ErrorDisplay for ValidateError {
         } else {
             writeln!(w, "Validate error:")?;
         }
-        writeln!(w, "Cause: {}", self.cause)?;
+        if let Some(cause) = &self.cause {
+            writeln!(w, "Cause: {}", cause)?;
+        }
         writeln!(
             w,
             "Value: {}: {} = {}",
@@ -62,11 +54,11 @@ impl crate::error::display::ErrorDisplay for ValidateError {
     }
 
     fn brief_display(&self, w: &mut impl Write) -> fmt::Result {
-        write!(w, "Validate error: ")?;
+        write!(w, "Validate error [{}]", self.path)?;
         if let Some(msg) = self.message {
-            writeln!(w, "{}", msg)?;
-        } else {
-            writeln!(w, "{}", self.cause)?;
+            writeln!(w, ": {}", msg)?;
+        } else if let Some(cause) = &self.cause {
+            writeln!(w, ": {}", cause)?;
         }
 
         Ok(())
@@ -76,13 +68,17 @@ impl crate::error::display::ErrorDisplay for ValidateError {
         write!(w, "Validate: ")?;
         if let Some(msg) = self.message {
             writeln!(w, "{}", msg)?;
+        } else if let Some(cause) = &self.cause {
+            writeln!(w, "{}", cause)?;
         } else {
-            writeln!(w, "{}", self.cause)?;
+            writeln!(w, "Invalid value found.")?;
         }
         writeln!(w, "Backtrace:")?;
         writeln!(w, "    Value: {}", self.value)?;
         writeln!(w, "    Operation: {}", self.expression)?;
-        writeln!(w, "    Error: {:?}", self.cause)?;
+        if let Some(cause) = &self.cause {
+            writeln!(w, "    Error: {:?}", cause)?;
+        }
 
         Ok(())
     }

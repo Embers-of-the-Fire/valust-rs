@@ -95,10 +95,12 @@ pub struct Outer {
 <details>
 
 ```rust
+#[automatically_derived]
 #[derive(Debug)]
 pub struct RawInner {
     pub code: f64,
 }
+#[automatically_derived]
 impl ::valust::Validate<Inner> for RawInner {
     fn validate(
         self,
@@ -111,15 +113,19 @@ impl ::valust::Validate<Inner> for RawInner {
             _valust_error: &mut ::valust::error::ValidationError,
         ) -> ::std::option::Option<f64> {
             if !(code > 10.0) {
-                _valust_error.push_validate_error(::valust::error::validate::ValidateError {
-                    field: "code",
-                    path: format!("{}", "code"),
-                    value: format!("(f64) {:?}", code),
-                    cause: ::std::boxed::Box::new(::valust::validate::error::validate::ValidateFail),
-                    message: ::std::option::Option::None,
-                    expression: "code > 10.0",
-                    type_name: "f64",
-                });
+                _valust_error.push_validate_error(
+                    ::valust::error::validate::ValidateError {
+                        field: "code",
+                        path: format!("{}", "code"),
+                        value: format!("(f64) {:?}", code),
+                        cause: ::std::option::Option::None,
+                        message: ::std::option::Option::Some(
+                            "code must be greater than 10.0",
+                        ),
+                        expression: "code > 10.0",
+                        type_name: "f64",
+                    },
+                );
             }
             ::std::option::Option::Some(code)
         }
@@ -134,11 +140,13 @@ impl ::valust::Validate<Inner> for RawInner {
     }
 }
 
+#[automatically_derived]
 #[derive(Debug)]
 pub struct RawOuter {
     pub inner: RawInner,
     pub extra: String,
 }
+#[automatically_derived]
 impl ::valust::Validate<Outer> for RawOuter {
     fn validate(
         self,
@@ -200,7 +208,6 @@ impl ::valust::Validate<Outer> for RawOuter {
         ::std::result::Result::Ok(Outer { inner, extra })
     }
 }
-
 ```
 
 </details>
