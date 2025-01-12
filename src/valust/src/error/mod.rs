@@ -86,4 +86,25 @@ impl display::ErrorDisplay for ValidationError {
 
         Ok(())
     }
+
+    fn human_readable_display(&self, w: &mut impl Write) -> fmt::Result {
+        write!(w, "❌ Oops! Some of the values are invalid!\n\n")?;
+        let mut cnt = 0;
+        self.validates.iter().try_for_each(|t| {
+            cnt += 1;
+            write!(w, "{: <4}", cnt.to_string() + ".")?;
+            t.human_readable_display(w)?;
+            writeln!(w)?;
+            Ok(())
+        })?;
+        self.transforms.iter().try_for_each(|t| {
+            cnt += 1;
+            write!(w, "{: <4}", cnt.to_string() + ".")?;
+            t.human_readable_display(w)?;
+            writeln!(w)?;
+            Ok(())
+        })?;
+
+        Ok(())
+    }
 }

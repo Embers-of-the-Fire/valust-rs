@@ -53,4 +53,5 @@ fn test_nested() {
     let err = out.unwrap_err();
     println!("{}", err.full_stringify());
     println!("{}", err.brief_stringify());
+    println!("{}", err.human_readable_stringify());
 }

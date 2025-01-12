@@ -62,4 +62,23 @@ impl crate::error::display::ErrorDisplay for TransformError {
 
         Ok(())
     }
+
+    fn human_readable_display(&self, w: &mut impl Write) -> fmt::Result {
+        write!(w, "Transform: ",)?;
+        if let Some(msg) = self.message {
+            writeln!(w, "{}", msg)?;
+        } else {
+            writeln!(w, "{}", self.cause)?;
+        }
+        writeln!(w, "Backtrace:")?;
+        writeln!(w, "    Value: {}", self.value)?;
+        writeln!(
+            w,
+            "    Operation: ({} => {}) {}",
+            self.source_type_name, self.target_type_name, self.expression
+        )?;
+        writeln!(w, "    Error: {:?}", self.cause)?;
+
+        Ok(())
+    }
 }
