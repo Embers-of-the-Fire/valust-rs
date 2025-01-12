@@ -82,7 +82,7 @@ checksum = "f6ccf251212114b54433ec949fd6a7841275f9ada20dddd2f29e9ceea4501493"
 
 [[package]]
 name = "valust"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "sealed",
  "valust-derive",
@@ -90,7 +90,7 @@ dependencies = [
 
 [[package]]
 name = "valust-derive"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "either",
  "proc-macro2",
@@ -100,7 +100,7 @@ dependencies = [
 
 [[package]]
 name = "valust-utils"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "convert_case",
 ]

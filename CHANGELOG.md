@@ -1,6 +1,10 @@
 # Changelog
 
-## V 0.3.0
+## V 0.3.1
+
+- Remove: remove debug-only info in `valust_derive` crate.
+
+## V 0.3.0 (Yanked, do not use)
 
 - Add: Add human-readable display.
 - Remove: Remove placeholder `ValidateFail`.
