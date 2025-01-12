@@ -56,3 +56,10 @@ assert_eq!(profile, UserProfile {
 ### External Tools & Utilities
 
 - [`valust-utils`](./crates/valust-utils/README.md): Utilities that might be used when defining validators.
+
+## Minimum Supported Rust Version (MSRV)
+
+The MSRV of this project is 1.78.0 (With lockfile version 4),
+but is possibly able to compile unlocked with Rust 1.74.1 (With lockfile version 3).
+
+And for development, the project requires Rust 1.83.0 to work on the source code.
