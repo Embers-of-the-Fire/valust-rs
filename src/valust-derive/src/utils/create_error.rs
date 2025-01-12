@@ -15,11 +15,9 @@ pub fn create_validate_error(
 ) -> TokenStream {
     let field_text = field.to_ident_assign().to_string();
     let field = field.to_ident();
-    let cause = if let Some(cause) = cause {
-        quote! { #cause }
-    } else {
-        quote! { ::valust::error::validate::ValidateFail }
-    };
+    let cause = cause
+        .map(|cause| quote! { ::std::option::Option::Some(::std::boxed::Box::new(#cause)) })
+        .unwrap_or(quote! { ::std::option::Option::None });
     let message = message
         .map(|m| quote! { ::std::option::Option::Some(#m) })
         .unwrap_or(quote! { ::std::option::Option::None });
@@ -39,7 +37,7 @@ pub fn create_validate_error(
                 field: #field_text,
                 path: format!("{}", #field_text),
                 value: #value_format,
-                cause: ::std::boxed::Box::new(#cause),
+                cause: #cause,
                 message: #message,
                 expression: #expr_text,
                 type_name: #type_text,
@@ -53,11 +51,9 @@ pub fn create_meta_validate_error(
     cause: Option<&Ident>,
     message: Option<&Expr>,
 ) -> TokenStream {
-    let cause = if let Some(cause) = cause {
-        quote! { #cause }
-    } else {
-        quote! { ::valust::error::validate::ValidateFail }
-    };
+    let cause = cause
+        .map(|c| quote! { ::std::option::Option::Some(::std::boxed::Box::new(#c)) })
+        .unwrap_or(quote! { ::std::option::Option::None });
     let message = message
         .map(|m| quote! { ::std::option::Option::Some(#m) })
         .unwrap_or(quote! { ::std::option::Option::None });
@@ -68,7 +64,7 @@ pub fn create_meta_validate_error(
                 field: "<meta>",
                 path: format!("<meta>"),
                 value: format!("<meta>"),
-                cause: ::std::boxed::Box::new(#cause),
+                cause: #cause,
                 message: #message,
                 expression: "<meta>",
                 type_name: "<meta>",

@@ -13,15 +13,15 @@ const FIELD_ATTRS: &[&str] = &["valid", "trans", "forward", "display"];
 const STRUCT_ATTRS: &[&str] = &["pre", "post", "rename", "forward_derive"];
 
 fn debug(_name: &str, tt: TokenStream) -> TokenStream {
-    // std::fs::write(
-    //     format!(
-    //         "{}/test.out.{}.rs",
-    //         std::env::var("CARGO_MANIFEST_DIR").unwrap(),
-    //         _name
-    //     ),
-    //     tt.to_string(),
-    // )
-    // .unwrap();
+    std::fs::write(
+        format!(
+            "{}/test.out.{}.rs",
+            std::env::var("CARGO_MANIFEST_DIR").unwrap(),
+            _name
+        ),
+        tt.to_string(),
+    )
+    .unwrap();
     tt
 }
 
