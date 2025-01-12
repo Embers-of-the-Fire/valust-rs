@@ -103,4 +103,6 @@ name = "valust-utils"
 version = "0.3.1"
 dependencies = [
  "convert_case",
+ "valust",
+ "valust-derive",
 ]

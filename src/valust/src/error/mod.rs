@@ -55,6 +55,12 @@ impl ValidationError {
         self.transforms.push(err);
     }
 
+    /// Append another error set.
+    pub fn append_error(&mut self, mut rhs: Self) {
+        self.validates.append(&mut rhs.validates);
+        self.transforms.append(&mut rhs.transforms);
+    }
+
     /// Extend the set.
     ///
     /// This will modify original set's `path` field.

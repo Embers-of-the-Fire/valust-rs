@@ -6,15 +6,19 @@ use convert_case::Casing;
 
 /// Converts a string to a specified case.
 ///
-/// ```rust,ignore
+/// ```rust
 /// use valust_utils::casing::{Case, to_case};
+/// use valust::{Validate, Raw, error::display::ErrorDisplay};
 /// use valust_derive::Valust;
 ///
-/// #[derive(Valust)]
+/// #[derive(Debug, Valust)]
 /// struct Casing(
-///     #[trans(fn(to_case(Case::Camel)))]
+///     #[trans(String => fn(to_case(Case::Pascal)))]
 ///     String
 /// );
+/// let case = RawCasing("snake_case".to_string());
+/// let val = Casing::validate(case);
+/// assert_eq!("SnakeCase", val.unwrap().0.as_str());
 /// ```
 pub fn to_case<A: AsRef<str>>(case: Case) -> impl Fn(A) -> String {
     move |s| s.as_ref().to_case(case)
