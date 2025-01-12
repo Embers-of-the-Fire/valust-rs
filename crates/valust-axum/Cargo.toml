@@ -1,0 +1,17 @@
+[package]
+name = "valust-axum"
+keywords = ["validator", "data", "utils", "axum", "web"]
+description = "Valust utilities for Axum"
+
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+categories.workspace = true
+
+[dependencies]
+axum = { workspace = true }
+
+[lints]
+workspace = true
