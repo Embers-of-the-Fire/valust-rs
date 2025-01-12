@@ -24,17 +24,17 @@ use the [`rename` struct attribute](#structure-attributes).
 | --------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
 | `valid`   | `valid(<validator>)`              | [Validator](#validator-expression), uses _raw_ data as input.                                                                                               | `valid(a > 10)`                          |
 | `trans`   | `trans(<transformer>)`            | [Transformer](#transformer-expression), converts _raw_ data to _transformed_ data.                                                                          | `trans(try(String => s.parse::<u32>()))` |
-| `forward` | `forward`, `forward(Ident)`       | [Forward the field](#forwarding-a-field) and uses it's validator to validate the field. itself.                                                             | `forward(RawInput)`                      |
+| `forward` | `forward`                         | [Forward the field](#forwarding-a-field) and uses it's validator to validate the field. itself.                                                             | `forward`                                |
 | `display` | `display = bool`, `display(bool)` | Whether to display the value when an error occurs. Enabled by default. <br /> [**Performance issues.**](#performance-issues-when-displaying-error-messages) | `display = false`                        |
 
 ### Structure Attributes
 
-| Name             | Syntax                              | Description                                           | Example                     |
-| ---------------- | ----------------------------------- | ----------------------------------------------------- | --------------------------- |
-| `forward_derive` | `forward_derive(Ident)`             | Add derive macros for the _raw_ data struct.          | `forward_derive(Debug)`     |
-| `pre`            | `pre(<validator>)`                  | Pre-validator, which uses _raw_ data as input.        | `pre(a > 10, b + c != 0.0)` |
-| `post`           | `post(<validator>)`                 | Post-validator, which uses _validated_ data as input. | `post(a > 10)`              |
-| `rename`         | `rename = "Ident"`, `rename(Ident)` | Rename the output _raw_ data struct.                  | `rename(Original)`          |
+| Name             | Syntax                              | Description                                                                                 | Example                     |
+| ---------------- | ----------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------- |
+| `forward_derive` | `forward_derive(Ident)`             | Add derive macros for the _raw_ data struct.                                                | `forward_derive(Debug)`     |
+| `pre`            | `pre(<validator>)`                  | Pre-validator, which uses _raw_ data as input.                                              | `pre(a > 10, b + c != 0.0)` |
+| `post`           | `post(<validator>)`                 | Post-validator, which uses _validated_ data as input.                                       | `post(a > 10)`              |
+| `rename`         | `rename = "Ident"`, `rename(Ident)` | Rename the output _raw_ data struct. <br /> [**Why we need `rename` ?**](#why-we-need-rename) | `rename(Original)`          |
 
 ### Special Expressions
 
@@ -224,8 +224,16 @@ extending the error `path` field. Additionally, it will automatically change the
 corresponding field of the _raw_ data struct to the original data type of that
 field.
 
-If no parameter is provided to `forward`, it will automatically use the default
-naming pattern (i.e., `RawXXX`).
+The _raw_ data type could be inferred by the compiler, so you don't need to
+specify it even if you've `rename`d it.
+
+### Why we need `rename`
+
+Though we don't need to specify the _raw_ data type when executing the
+validator, we might need to construct them directly. Sadly, due to rust's
+language syntax limitations, we cannot construct an unnamed struct using type
+alias (i.e. `valust::Raw::<Foo>`). That's why we may need `rename` a _raw_
+type.
 
 ### Performance issues when displaying error messages
 

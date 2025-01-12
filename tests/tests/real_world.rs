@@ -1,3 +1,5 @@
+use valust::Raw;
+
 #[test]
 fn real_world_test() -> Result<(), Box<dyn std::error::Error>> {
     use valust::Validate;
@@ -17,18 +19,18 @@ fn real_world_test() -> Result<(), Box<dyn std::error::Error>> {
     #[post(user_id + (username.0.len() as u32) == magic_number)]
     pub struct UserProfile {
         pub user_id: u32,
-        #[forward(UncheckedUsername)]
+        #[forward]
         pub username: Username,
         pub magic_number: u32,
     }
 
-    let raw_profile = RawUserProfile {
+    let raw_profile = Raw::<UserProfile> {
         user_id: 10,
         username: UncheckedUsername("  Foo  ".into()),
         magic_number: 13,
     };
 
-    let profile = raw_profile.validate().expect("Check failed");
+    let profile = UserProfile::validate(raw_profile).expect("Check failed");
     assert_eq!(profile, UserProfile {
         user_id: 10,
         username: Username("Foo".into()),
