@@ -71,4 +71,19 @@ impl crate::error::display::ErrorDisplay for ValidateError {
 
         Ok(())
     }
+
+    fn human_readable_display(&self, w: &mut impl Write) -> fmt::Result {
+        write!(w, "Validate: ")?;
+        if let Some(msg) = self.message {
+            writeln!(w, "{}", msg)?;
+        } else {
+            writeln!(w, "{}", self.cause)?;
+        }
+        writeln!(w, "Backtrace:")?;
+        writeln!(w, "    Value: {}", self.value)?;
+        writeln!(w, "    Operation: {}", self.expression)?;
+        writeln!(w, "    Error: {:?}", self.cause)?;
+
+        Ok(())
+    }
 }

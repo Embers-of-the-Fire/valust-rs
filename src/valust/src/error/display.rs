@@ -18,6 +18,11 @@ pub trait ErrorDisplay {
         self.full_display(f)
     }
 
+    /// Human-readable display of the error.
+    fn human_readable_display(&self, f: &mut impl Write) -> fmt::Result {
+        self.brief_display(f)
+    }
+
     /// Display the error fully and write it to a `String`.
     fn full_stringify(&self) -> String {
         let mut s = String::new();
@@ -29,6 +34,13 @@ pub trait ErrorDisplay {
     fn brief_stringify(&self) -> String {
         let mut s = String::new();
         self.brief_display(&mut s).unwrap();
+        s
+    }
+
+    /// Display the error in a human-readable way and write it to a `String`.
+    fn human_readable_stringify(&self) -> String {
+        let mut s = String::new();
+        self.human_readable_display(&mut s).unwrap();
         s
     }
 }
