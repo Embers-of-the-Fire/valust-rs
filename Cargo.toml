@@ -15,9 +15,10 @@ categories = ["config", "data-structures", "development-tools::debugging", "rust
 # 3rd-party dependencies
 syn = { version = "2.0.96" }
 quote = { version = "1.0.38" }
-proc-macro2 = { version = "1.0.92" }
+proc-macro2 = { version = "1.0.93" }
 either = { version = "1.13.0" }
 sealed = { version = "0.6.0" }
+convert_case = { version = "0.7.0" }
 
 # Internal dependencies
 valust = { path = "src/valust", version = "0.2.0"}

@@ -8,6 +8,9 @@ publish = false
 path = "lib.rs"
 
 [dependencies]
+convert_case = { workspace = true }
+syn = { workspace = true }
+
 valust = { workspace = true }
 valust-derive = { workspace = true }
 valust-utils = { workspace = true }
