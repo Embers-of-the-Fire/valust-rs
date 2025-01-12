@@ -26,7 +26,7 @@ pub struct Username(
 #[post(user_id + (username.0.len() as u32) == magic_number)]
 pub struct UserProfile {
     pub user_id: u32,
-    #[forward(UncheckedUsername)]
+    #[forward]
     pub username: Username,
     pub magic_number: u32,
 }

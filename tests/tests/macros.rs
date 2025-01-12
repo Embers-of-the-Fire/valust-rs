@@ -1,5 +1,6 @@
 #![allow(unused_comparisons, clippy::absurd_extreme_comparisons, dead_code)]
 
+use valust::Raw;
 use valust::error::display::ErrorDisplay;
 use valust_derive::Valust;
 
@@ -18,7 +19,10 @@ fn test_macro() {
         pub u32,
     );
 
-    println!("{:#?}", RawW(-2.0, "15".to_owned()).validate().map(|_| ""));
+    println!(
+        "{:#?}",
+        W::validate(RawW(-2.0, "15".to_owned())).map(|_| "")
+    );
 }
 
 #[test]
@@ -44,11 +48,10 @@ fn test_nested() {
         pub extra: u32,
     }
 
-    let out = RawOuter {
-        inner: RawInner { code: 10.0 },
+    let out = Outer::validate(Raw::<Outer> {
+        inner: Raw::<Inner> { code: 10.0 },
         extra: "  1a".to_owned(),
-    }
-    .validate();
+    });
     println!("{:#?}\n", out);
     let err = out.unwrap_err();
     println!("{}", err.full_stringify());

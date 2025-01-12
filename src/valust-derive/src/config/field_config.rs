@@ -151,7 +151,7 @@ impl FieldName {
 
 pub enum FieldOperation {
     Manual(FieldManualOperation),
-    Forward(Type),
+    Forward,
 }
 
 impl From<FieldManualOperation> for FieldOperation {
@@ -161,10 +161,12 @@ impl From<FieldManualOperation> for FieldOperation {
 }
 
 impl FieldOperation {
-    pub fn get_origin_ty(&self) -> Option<Type> {
+    pub fn get_origin_ty(&self, trans_ty: &Type) -> Option<Type> {
         match self {
             Self::Manual(m) => m.get_origin_ty(),
-            Self::Forward(f) => Some(f.clone()),
+            Self::Forward => Some(Type::Verbatim(
+                quote! { <#trans_ty as ::valust::Validate>::Raw },
+            )),
         }
     }
 
@@ -179,7 +181,7 @@ impl FieldOperation {
             Self::Manual(m) => {
                 m.to_process_op(field_name, out_type, error_ident, display)
             }
-            Self::Forward(ty) => {
+            Self::Forward => {
                 let field = field_name.to_ident();
                 let field_text = field_name.to_ident_assign().to_string();
                 let err = format_ident!(
@@ -188,7 +190,7 @@ impl FieldOperation {
                     span = field_name.get_span()
                 );
                 quote! {
-                    let #field = match (<#ty as ::valust::Validate::<#out_type>>::validate(#field)) {
+                    let #field = match (<#out_type as ::valust::Validate>::validate(#field)) {
                         Ok(value) => value,
                         Err(#err) => {
                             #error_ident.extend_error(#field_text, #err);
@@ -225,7 +227,7 @@ impl FieldConfig {
     pub fn get_origin_ty(&self) -> Type {
         self.operations
             .iter()
-            .find_map(|o| o.get_origin_ty())
+            .find_map(|o| o.get_origin_ty(&self.ty))
             .unwrap_or(self.ty.clone())
     }
 

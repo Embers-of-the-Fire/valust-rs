@@ -59,9 +59,11 @@ impl StructConfig {
 
     pub fn to_trait_impl(&self) -> syn::Result<TokenStream> {
         let (origin_name, origin_decl) = self.to_origin_decl();
+        let raw_ident =
+            format_ident!("_valust_raw_{}", origin_name, span = origin_name.span());
         let name = &self.name;
 
-        let unpack = self.to_unpack_op(&origin_name);
+        let unpack = self.to_unpack_op(&raw_ident, &origin_name);
         let process = self.to_process_op()?;
         let pack = self.to_pack_op()?;
 
@@ -70,8 +72,10 @@ impl StructConfig {
             #origin_decl
 
             #[automatically_derived]
-            impl ::valust::Validate<#name> for #origin_name {
-                fn validate(self)
+            impl ::valust::Validate for #name {
+                type Raw = #origin_name;
+
+                fn validate(#raw_ident: Self::Raw)
                     -> ::std::result::Result<#name, ::valust::error::ValidationError> {
                     #![allow(non_snake_case)]
                     #unpack
@@ -82,12 +86,12 @@ impl StructConfig {
         })
     }
 
-    fn to_unpack_op(&self, origin_ident: &Ident) -> TokenStream {
+    fn to_unpack_op(&self, raw_ident: &Ident, origin_ident: &Ident) -> TokenStream {
         let assign = self.fields.iter().map(|f| f.name.to_ident());
         if self.is_named {
-            quote! { let #origin_ident { #(#assign),* } = self; }
+            quote! { let #origin_ident { #(#assign),* } = #raw_ident; }
         } else {
-            quote! { let #origin_ident(#(#assign),*) = self; }
+            quote! { let #origin_ident(#(#assign),*) = #raw_ident; }
         }
     }
 

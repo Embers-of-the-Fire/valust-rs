@@ -1,6 +1,6 @@
 use quote::ToTokens;
 use syn::spanned::Spanned;
-use syn::{Expr, ExprLit, Field, Lit, LitBool, Meta, parse_str, parse2};
+use syn::{Expr, ExprLit, Field, Lit, LitBool, Meta, parse2};
 
 use super::parse_field_transformer::TransformerAttr;
 use super::parse_field_validator::ValidatorAttr;
@@ -49,17 +49,9 @@ pub fn parse_field_attr(field: &Field, index: usize) -> syn::Result<FieldConfig>
                 }
             } else if attr.path().is_ident("forward") {
                 match &attr.meta {
-                    Meta::List(list) => Some(
-                        parse2(list.tokens.clone())
-                            .map(|t| vec![FieldOperation::Forward(t)]),
-                    ),
-                    Meta::Path(_) => Some(
-                        parse_str(&format!("Raw{}", ty.to_token_stream()))
-                            .map(|t| vec![FieldOperation::Forward(t)]),
-                    ),
+                    Meta::Path(_) => Some(Ok(vec![FieldOperation::Forward])),
                     _ => Some(Err(create_invalid_attr_call_error(span, "forward", &[
                         "forward",
-                        "forward(...)",
                     ]))),
                 }
             } else if attr.path().is_ident("display") {

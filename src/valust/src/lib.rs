@@ -8,45 +8,21 @@ pub mod error;
 #[cfg(feature = "derive")]
 pub use valust_derive as derive;
 
-/// A trait for validating and converting raw input data into a specific type.
+/// The `Validate` trait provides a general data validation interface.
 ///
-/// **Note:** This trait will automatically implements `ValidateFrom<Self>` for `Output`.
-///
-/// # Type Parameters
-///
-/// - `Output` - The type of the output validated data.
-///
-/// # Errors
-///
-/// This method returns a `Result` with the implementing type on success, or a `ValidationError` on failure.
-pub trait Validate<Output> {
-    /// Validate the raw data.
-    fn validate(self) -> Result<Output, error::ValidationError>;
+/// The `Validate` trait is used to validate raw data and convert it into a
+/// validated data type. The raw data is passed to the `validate` function,
+/// which returns a `Result` containing either the validated data or an error.
+pub trait Validate: Sized {
+    /// The raw data type.
+    type Raw;
+
+    /// Validates the raw data and returns the validated data or an error.
+    fn validate(raw: Self::Raw) -> Result<Self, error::ValidationError>;
 }
 
-/// A trait for validating and converting raw input data into a specific type.
+/// A type alias for the raw data type of a validated data type.
 ///
-/// **Note:** This trait will be automatically implemented if `R` implements `Validate<Self>`.
-///
-/// # Type Parameters
-///
-/// - `R` - The type of the raw input data to be validated and converted.
-///
-/// # Errors
-///
-/// This method returns a `Result` with the implementing type on success, or a `ValidationError` on failure.
-pub trait ValidateFrom<R> {
-    /// Validate the raw data.
-    fn validate_from(raw: R) -> Result<Self, error::ValidationError>
-    where
-        Self: Sized;
-}
-
-impl<T, U> ValidateFrom<T> for U
-where
-    T: Validate<U>,
-{
-    fn validate_from(raw: T) -> Result<Self, error::ValidationError> {
-        raw.validate()
-    }
-}
+/// This type alias is used to simplify the definition of the `Raw` associated
+/// type in the `Validate` trait.
+pub type Raw<T> = <T as Validate>::Raw;
