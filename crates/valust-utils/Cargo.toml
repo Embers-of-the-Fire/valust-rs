@@ -11,6 +11,11 @@ repository.workspace = true
 categories.workspace = true
 
 [dependencies]
+convert_case = { workspace = true, optional = true }
+
+[features]
+default = ["casing"]
+casing = ["convert_case"]
 
 [lints]
 workspace = true
