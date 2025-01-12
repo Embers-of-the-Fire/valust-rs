@@ -13,7 +13,7 @@ categories.workspace = true
 [dependencies]
 convert_case = { workspace = true, optional = true }
 
-valust = { workspace = true, default-features = false }
+valust = { workspace = true }
 
 [dev-dependencies]
 valust-derive = { workspace = true }
