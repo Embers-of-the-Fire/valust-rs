@@ -18,6 +18,7 @@ serde_yaml = { workspace = true, optional = true }
 toml = { workspace = true, optional = true }
 quick-xml = { workspace = true, optional = true, features = ["serialize"] }
 rmp-serde = { workspace = true, optional = true }
+ciborium = { workspace = true, optional = true }
 mime = { workspace = true }
 
 valust = { workspace = true }
@@ -29,13 +30,14 @@ serde = { workspace = true, features = ["derive"] }
 valust-derive = { workspace = true }
 
 [features]
-default = ["json", "form", "sonic", "yaml", "toml", "xml", "msgpack"]
+default = ["json", "form", "sonic", "yaml", "toml", "xml", "msgpack", "cbor"]
 json = ["axum/json"]
 form = ["axum/form"]
 sonic = ["sonic-rs"]
 yaml = ["serde_yaml"]
 xml = ["quick-xml"]
 msgpack = ["rmp-serde"]
+cbor = ["ciborium"]
 
 [lints]
 workspace = true

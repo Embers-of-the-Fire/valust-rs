@@ -50,6 +50,13 @@ pub mod msgpack;
 #[cfg_attr(docsrs, doc(cfg(feature = "msgpack")))]
 pub use msgpack::ValidMsgPack;
 
+#[cfg(feature = "cbor")]
+#[cfg_attr(docsrs, doc(cfg(feature = "cbor")))]
+pub mod cbor;
+#[cfg(feature = "cbor")]
+#[cfg_attr(docsrs, doc(cfg(feature = "cbor")))]
+pub use cbor::ValidCbor;
+
 use mime::Mime;
 
 pub mod rejection;
