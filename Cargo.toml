@@ -1,5 +1,5 @@
 [workspace]
-members = ["src/valust", "src/valust-derive", "tests", "crates/valust-utils"]
+members = ["src/valust", "src/valust-derive", "tests", "crates/valust-utils", "crates/valust-axum"]
 resolver = "2"
 
 [workspace.package]
@@ -18,8 +18,9 @@ quote = { version = "1.0.38" }
 proc-macro2 = { version = "1.0.93" }
 either = { version = "1.13.0" }
 sealed = { version = "0.6.0" }
-convert_case = { version = "0.7.0" }
+convert_case = { version = "0.7.1" }
 axum = { version = "0.8.1" }
+serde = { version = "1.0.217" }
 
 # Internal dependencies
 valust = { path = "src/valust", version = "0.3.1"}
