@@ -57,6 +57,13 @@ pub mod cbor;
 #[cfg_attr(docsrs, doc(cfg(feature = "cbor")))]
 pub use cbor::ValidCbor;
 
+#[cfg(feature = "ron")]
+#[cfg_attr(docsrs, doc(cfg(feature = "ron")))]
+pub mod ron;
+#[cfg(feature = "ron")]
+#[cfg_attr(docsrs, doc(cfg(feature = "ron")))]
+pub use ron::ValidRon;
+
 use mime::Mime;
 
 pub mod rejection;

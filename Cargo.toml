@@ -38,6 +38,7 @@ toml = { version = "0.8.19" }
 quick-xml = { version = "0.37.2" }
 rmp-serde = { version = "1.3.0" }
 ciborium = { version = "0.2.2" }
+ron = { version = "0.8" }
 mime = { version = "0.3.17" }
 
 # Internal dependencies
