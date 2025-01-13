@@ -1,8 +1,9 @@
 //! Rejection types for wrapping the `valust` error type.
 
-use axum::extract::FromRequest;
+use axum::extract::rejection::BytesRejection;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
+use mime::Mime;
 use valust::error::ValidationError;
 use valust::error::display::ErrorDisplay;
 
@@ -21,21 +22,52 @@ use valust::error::display::ErrorDisplay;
 ///   implementation.
 ///
 /// [plain-display]: valust::error::display::ErrorDisplay#method.human_readable_display
-pub enum ValidateRejection<T: FromRequest<S>, S: Sync + Send> {
-    /// The request data was invalid.
-    Invalid(ValidationError),
-    /// An internal rejection occurred.
-    Internal(T::Rejection),
+#[derive(Debug)]
+pub enum ValidateRejection<E> {
+    /// The `Invalid` variant represents an HTTP 422 Unprocessable Entity error.
+    /// This error occurs when the data provided is not valid.
+    InvalidValue(ValidationError),
+    /// The `UnsupportedMediaType` variant represents an HTTP 415 Unsupported Media Type error.
+    /// This error occurs when the server cannot handle the media type specified in the request.
+    UnsupportedMediaType(Mime),
+    /// Failed to buffer body.
+    BytesRejection(BytesRejection),
+    /// The `InvalidContentFormat` variant represents an HTTP 422 Unprocessable Content error with an associated error message.
+    /// This error occurs when the server cannot handle the content in the request.
+    InvalidContentFormat(E),
 }
 
-impl<T: FromRequest<S>, S: Sync + Send> IntoResponse for ValidateRejection<T, S> {
+impl<R: ToString> IntoResponse for ValidateRejection<R> {
     fn into_response(self) -> Response {
         match self {
-            Self::Invalid(err) => {
-                (StatusCode::BAD_REQUEST, err.human_readable_stringify())
-                    .into_response()
-            }
-            Self::Internal(rej) => rej.into_response(),
+            Self::InvalidValue(err) => (
+                StatusCode::UNPROCESSABLE_ENTITY,
+                err.human_readable_stringify(),
+            )
+                .into_response(),
+            Self::UnsupportedMediaType(media) => (
+                StatusCode::UNSUPPORTED_MEDIA_TYPE,
+                format!("Unsupported media type: {}", media.essence_str()),
+            )
+                .into_response(),
+            Self::BytesRejection(err) => err.into_response(),
+            Self::InvalidContentFormat(err) => (
+                StatusCode::UNPROCESSABLE_ENTITY,
+                format!("Invalid content format: {}", err.to_string()),
+            )
+                .into_response(),
         }
+    }
+}
+
+impl<E> From<ValidationError> for ValidateRejection<E> {
+    fn from(err: ValidationError) -> Self {
+        Self::InvalidValue(err)
+    }
+}
+
+impl<E> From<BytesRejection> for ValidateRejection<E> {
+    fn from(err: BytesRejection) -> Self {
+        Self::BytesRejection(err)
     }
 }

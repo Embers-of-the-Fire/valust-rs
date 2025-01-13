@@ -2,28 +2,26 @@
 
 use std::ops::{Deref, DerefMut};
 
-use axum::{
-    Form,
-    extract::{FromRequest, Request},
-};
+use axum::Form;
+use axum::extract::{FromRequest, Request};
 use serde::de::DeserializeOwned;
 use valust::Validate;
 
 use super::rejection::ValidateRejection;
 
 /// Wrapper around a validated form value.
-/// 
+///
 /// ## Response on Error
-/// 
+///
 /// If the validation fails, the request will be rejected with a [`ValidateRejection`].
-/// 
+///
 /// Specifically, if:
 /// - The request body is not a valid `x-www-form-urlencoded` data, the rejection will be `Internal`.  
 ///   For detailed information, see [`Form`] for more information.
 /// - The request body is a valid `x-www-form-urlencoded` data but the validation fails,
 ///   the rejection will be `Invalid`.  
 ///   For detailed information, see [`ValidationError`][valust::error::ValidationError] for more information.
-/// 
+///
 /// ## Example
 ///
 /// ```rust,no_run
@@ -82,14 +80,14 @@ where
     T: Validate,
     T::Raw: DeserializeOwned,
 {
-    type Rejection = ValidateRejection<Form<T::Raw>, S>;
+    type Rejection = ValidateRejection<<Form<T::Raw> as FromRequest<S>>::Rejection>;
 
     async fn from_request(req: Request, state: &S) -> Result<Self, Self::Rejection> {
         let Form(raw) = Form::<T::Raw>::from_request(req, state)
             .await
-            .map_err(ValidateRejection::Internal)?;
+            .map_err(ValidateRejection::InvalidContentFormat)?;
 
-        let data = T::validate(raw).map_err(ValidateRejection::Invalid)?;
+        let data = T::validate(raw)?;
 
         Ok(ValidForm(data))
     }

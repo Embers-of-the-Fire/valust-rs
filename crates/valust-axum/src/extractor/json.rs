@@ -73,14 +73,14 @@ where
     T: Validate,
     T::Raw: DeserializeOwned,
 {
-    type Rejection = ValidateRejection<Json<T::Raw>, S>;
+    type Rejection = ValidateRejection<<Json<T::Raw> as FromRequest<S>>::Rejection>;
 
     async fn from_request(req: Request, state: &S) -> Result<Self, Self::Rejection> {
-        let Json(raw) = Json::<T::Raw>::from_request(req, state)
+        let Json(json) = Json::from_request(req, state)
             .await
-            .map_err(ValidateRejection::Internal)?;
+            .map_err(ValidateRejection::InvalidContentFormat)?;
 
-        let data = T::validate(raw).map_err(ValidateRejection::Invalid)?;
+        let data = T::validate(json)?;
 
         Ok(ValidJson(data))
     }
