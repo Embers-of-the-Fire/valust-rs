@@ -14,6 +14,7 @@ categories.workspace = true
 axum = { workspace = true }
 serde = { workspace = true }
 sonic-rs = { workspace = true, optional = true }
+serde_yaml = { workspace = true, optional = true }
 mime = { workspace = true }
 
 valust = { workspace = true }
@@ -25,10 +26,11 @@ serde = { workspace = true, features = ["derive"] }
 valust-derive = { workspace = true }
 
 [features]
-default = ["json", "form", "sonic"]
+default = ["json", "form", "sonic", "yaml"]
 json = ["axum/json"]
 form = ["axum/form"]
 sonic = ["sonic-rs"]
+yaml = ["serde_yaml"]
 
 [lints]
 workspace = true

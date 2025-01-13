@@ -18,14 +18,22 @@ pub use form::ValidForm;
 #[cfg(feature = "sonic")]
 #[cfg_attr(docsrs, doc(cfg(feature = "sonic")))]
 pub mod sonic;
-use mime::Mime;
 #[cfg(feature = "sonic")]
 #[cfg_attr(docsrs, doc(cfg(feature = "sonic")))]
 pub use sonic::ValidSonic;
 
+#[cfg(feature = "yaml")]
+#[cfg_attr(docsrs, doc(cfg(feature = "yaml")))]
+pub mod yaml;
+#[cfg(feature = "yaml")]
+#[cfg_attr(docsrs, doc(cfg(feature = "yaml")))]
+pub use yaml::ValidYaml;
+
+use mime::Mime;
+
 pub mod rejection;
 
-fn check_content_type(headers: &HeaderMap, expected_content_type: Mime) -> bool {
+fn check_content_type(headers: &HeaderMap, expected_content_type: &'static str) -> bool {
     let content_type = if let Some(content_type) = headers.get(header::CONTENT_TYPE) {
         content_type
     } else {
