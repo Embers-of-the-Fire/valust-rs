@@ -13,18 +13,22 @@ categories.workspace = true
 [dependencies]
 axum = { workspace = true }
 serde = { workspace = true }
+sonic-rs = { workspace = true, optional = true }
+mime = { workspace = true }
 
 valust = { workspace = true }
 
 [dev-dependencies]
 axum = { workspace = true, features = ["macros"] }
 serde = { workspace = true, features = ["derive"] }
+
 valust-derive = { workspace = true }
 
 [features]
-default = ["json", "form"]
+default = ["json", "form", "sonic"]
 json = ["axum/json"]
 form = ["axum/form"]
+sonic = ["sonic-rs"]
 
 [lints]
 workspace = true
