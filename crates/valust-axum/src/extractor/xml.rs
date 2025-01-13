@@ -85,10 +85,10 @@ where
         let raw = std::str::from_utf8(&raw).map_err(|e| {
             ValidateRejection::InvalidContentFormat(quick_xml::DeError::custom(e))
         })?;
-        let json = quick_xml::de::from_str(raw)
+        let data = quick_xml::de::from_str(raw)
             .map_err(ValidateRejection::InvalidContentFormat)?;
 
-        let data = T::validate(json).map_err(ValidateRejection::InvalidValue)?;
+        let data = T::validate(data)?;
 
         Ok(ValidXml(data))
     }

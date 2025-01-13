@@ -82,10 +82,10 @@ where
         }
 
         let raw = Bytes::from_request(req, state).await?;
-        let json = sonic_rs::from_slice(&raw)
+        let raw = sonic_rs::from_slice(&raw)
             .map_err(ValidateRejection::InvalidContentFormat)?;
 
-        let data = T::validate(json).map_err(ValidateRejection::InvalidValue)?;
+        let data = T::validate(raw)?;
 
         Ok(ValidSonic(data))
     }

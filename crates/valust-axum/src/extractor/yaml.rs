@@ -82,10 +82,10 @@ where
         }
 
         let raw = Bytes::from_request(req, state).await?;
-        let json = serde_yaml::from_slice(&raw)
+        let data = serde_yaml::from_slice(&raw)
             .map_err(ValidateRejection::InvalidContentFormat)?;
 
-        let data = T::validate(json).map_err(ValidateRejection::InvalidValue)?;
+        let data = T::validate(data)?;
 
         Ok(ValidYaml(data))
     }

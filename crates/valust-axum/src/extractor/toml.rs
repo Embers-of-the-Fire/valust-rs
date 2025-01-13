@@ -85,10 +85,10 @@ where
         let raw = std::str::from_utf8(&raw).map_err(|e| {
             ValidateRejection::InvalidContentFormat(toml::de::Error::custom(e))
         })?;
-        let json =
+        let data =
             toml::from_str(raw).map_err(ValidateRejection::InvalidContentFormat)?;
 
-        let data = T::validate(json).map_err(ValidateRejection::InvalidValue)?;
+        let data = T::validate(data)?;
 
         Ok(ValidToml(data))
     }
