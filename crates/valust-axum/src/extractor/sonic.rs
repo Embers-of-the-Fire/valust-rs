@@ -77,8 +77,8 @@ where
     type Rejection = ValidateRejection<sonic_rs::Error>;
 
     async fn from_request(req: Request, state: &S) -> Result<Self, Self::Rejection> {
-        if !check_content_type(req.headers(), mime::APPLICATION_JSON) {
-            return Err(ValidateRejection::UnsupportedMediaType(mime::APPLICATION_JSON));
+        if !check_content_type(req.headers(), "application/json") {
+            return Err(ValidateRejection::UnsupportedMediaType("application/json"));
         }
 
         let raw = Bytes::from_request(req, state).await?;

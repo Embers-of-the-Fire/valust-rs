@@ -3,7 +3,6 @@
 use axum::extract::rejection::BytesRejection;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
-use mime::Mime;
 use valust::error::ValidationError;
 use valust::error::display::ErrorDisplay;
 
@@ -29,7 +28,7 @@ pub enum ValidateRejection<E> {
     InvalidValue(ValidationError),
     /// The `UnsupportedMediaType` variant represents an HTTP 415 Unsupported Media Type error.
     /// This error occurs when the server cannot handle the media type specified in the request.
-    UnsupportedMediaType(Mime),
+    UnsupportedMediaType(&'static str),
     /// Failed to buffer body.
     BytesRejection(BytesRejection),
     /// The `InvalidContentFormat` variant represents an HTTP 422 Unprocessable Content error with an associated error message.
@@ -47,7 +46,7 @@ impl<R: ToString> IntoResponse for ValidateRejection<R> {
                 .into_response(),
             Self::UnsupportedMediaType(media) => (
                 StatusCode::UNSUPPORTED_MEDIA_TYPE,
-                format!("Unsupported media type: {}", media.essence_str()),
+                format!("Unsupported media type: {}", media),
             )
                 .into_response(),
             Self::BytesRejection(err) => err.into_response(),
