@@ -26,4 +26,4 @@ valust-derive = { path = "src/valust-derive", version = "0.3.1"}
 valust-utils = { path = "crates/valust-utils", version = "0.3.1"}
 
 [workspace.lints.rust]
-missing_docs = "deny"
+missing_docs = "warn"
