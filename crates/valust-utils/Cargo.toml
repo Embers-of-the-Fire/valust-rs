@@ -13,6 +13,11 @@ categories.workspace = true
 [dependencies]
 convert_case = { workspace = true, optional = true }
 
+valust = { workspace = true }
+
+[dev-dependencies]
+valust-derive = { workspace = true }
+
 [features]
 default = ["casing"]
 casing = ["convert_case"]

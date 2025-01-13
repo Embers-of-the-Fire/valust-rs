@@ -27,6 +27,9 @@ pub struct ValidationError {
     pub transforms: Vec<TransformError>,
 }
 
+/// Type alias for `Result<ValidationError>`.
+pub type ValidationResult<T> = Result<T, ValidationError>;
+
 impl ValidationError {
     /// Create an empty error set.
     pub fn new() -> Self {
@@ -50,6 +53,12 @@ impl ValidationError {
     /// Push a transformer error to the set.
     pub fn push_transform_error(&mut self, err: TransformError) {
         self.transforms.push(err);
+    }
+
+    /// Append another error set.
+    pub fn append_error(&mut self, mut rhs: Self) {
+        self.validates.append(&mut rhs.validates);
+        self.transforms.append(&mut rhs.transforms);
     }
 
     /// Extend the set.
