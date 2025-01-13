@@ -29,6 +29,13 @@ pub mod yaml;
 #[cfg_attr(docsrs, doc(cfg(feature = "yaml")))]
 pub use yaml::ValidYaml;
 
+#[cfg(feature = "toml")]
+#[cfg_attr(docsrs, doc(cfg(feature = "toml")))]
+pub mod toml;
+#[cfg(feature = "toml")]
+#[cfg_attr(docsrs, doc(cfg(feature = "toml")))]
+pub use toml::ValidToml;
+
 use mime::Mime;
 
 pub mod rejection;

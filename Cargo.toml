@@ -23,6 +23,7 @@ axum = { version = "0.8.1" }
 serde = { version = "1.0.217" }
 sonic-rs = { version = "0.3.17" }
 serde_yaml = { version = "0.9.34" }
+toml = { version = "0.8.19" }
 mime = { version = "0.3.17" }
 
 # Internal dependencies
