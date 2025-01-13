@@ -43,6 +43,13 @@ pub mod xml;
 #[cfg_attr(docsrs, doc(cfg(feature = "xml")))]
 pub use xml::ValidXml;
 
+#[cfg(feature = "msgpack")]
+#[cfg_attr(docsrs, doc(cfg(feature = "msgpack")))]
+pub mod msgpack;
+#[cfg(feature = "msgpack")]
+#[cfg_attr(docsrs, doc(cfg(feature = "msgpack")))]
+pub use msgpack::ValidMsgPack;
+
 use mime::Mime;
 
 pub mod rejection;
