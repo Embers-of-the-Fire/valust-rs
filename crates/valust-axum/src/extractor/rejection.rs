@@ -12,14 +12,6 @@ use valust::error::display::ErrorDisplay;
 ///
 /// If the validation fails, the request will be rejected with a `ValidateRejection`.
 ///
-/// Specifically, if:
-/// - The request data is not valid, the rejection will be `Invalid`.
-///   And the response will be a `400 Bad Request` with the error message
-///   in [plain text][plain-display].
-/// - An internal rejection occurs, the rejection will be `Internal`.
-///   And the response will be the rejection response, depending on the rejection's
-///   implementation.
-///
 /// [plain-display]: valust::error::display::ErrorDisplay#method.human_readable_display
 #[derive(Debug)]
 pub enum ValidateRejection<E> {
