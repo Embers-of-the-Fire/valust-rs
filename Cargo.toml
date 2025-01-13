@@ -1,5 +1,11 @@
 [workspace]
-members = ["src/valust", "src/valust-derive", "tests", "crates/valust-utils", "crates/valust-axum"]
+members = [
+    "src/valust",
+    "src/valust-derive",
+    "tests",
+    "crates/valust-utils",
+    "crates/valust-axum",
+]
 resolver = "2"
 
 [workspace.package]
@@ -9,7 +15,12 @@ edition = "2021"
 authors = ["Embers-of-the-Fire <stellarishs@163.com>"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/Embers-of-the-Fire/valust-rs"
-categories = ["config", "data-structures", "development-tools::debugging", "rust-patterns"]
+categories = [
+    "config",
+    "data-structures",
+    "development-tools::debugging",
+    "rust-patterns",
+]
 
 [workspace.dependencies]
 # 3rd-party dependencies
@@ -24,12 +35,14 @@ serde = { version = "1.0.217" }
 sonic-rs = { version = "0.3.17" }
 serde_yaml = { version = "0.9.34" }
 toml = { version = "0.8.19" }
+quick-xml = { version = "0.37.2" }
 mime = { version = "0.3.17" }
 
 # Internal dependencies
-valust = { path = "src/valust", version = "0.3.1"}
-valust-derive = { path = "src/valust-derive", version = "0.3.1"}
-valust-utils = { path = "crates/valust-utils", version = "0.3.1"}
+valust = { path = "src/valust", version = "0.3.1" }
+valust-derive = { path = "src/valust-derive", version = "0.3.1" }
+valust-utils = { path = "crates/valust-utils", version = "0.3.1" }
+valust-axum = { path = "crates/valust-axum", version = "0.3.1" }
 
 [workspace.lints.rust]
 missing_docs = "warn"

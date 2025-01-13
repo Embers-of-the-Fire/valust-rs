@@ -36,6 +36,13 @@ pub mod toml;
 #[cfg_attr(docsrs, doc(cfg(feature = "toml")))]
 pub use toml::ValidToml;
 
+#[cfg(feature = "xml")]
+#[cfg_attr(docsrs, doc(cfg(feature = "xml")))]
+pub mod xml;
+#[cfg(feature = "xml")]
+#[cfg_attr(docsrs, doc(cfg(feature = "xml")))]
+pub use xml::ValidXml;
+
 use mime::Mime;
 
 pub mod rejection;
