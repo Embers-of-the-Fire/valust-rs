@@ -10,7 +10,7 @@ use valust::Validate;
 use super::check_content_type;
 use super::rejection::ValidateRejection;
 
-/// Wrapper around a validated Toml value.
+/// Wrapper around a validated [Message Pack](https://msgpack.org/) value.
 ///
 /// ```rust,no_run
 /// use axum::{
