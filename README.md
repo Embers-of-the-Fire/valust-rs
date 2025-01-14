@@ -9,7 +9,7 @@ simple attributes added to your data structures.
 ## Example
 
 ```rust
-use valust::Validate;
+use valust::{Validate, Raw};
 use valust_derive::Valust;
 
 #[derive(Debug, Valust, PartialEq)]
