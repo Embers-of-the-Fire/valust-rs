@@ -3,6 +3,7 @@ name = "valust"
 keywords = ["validator", "data"]
 description = "A data validation library for Rust"
 readme = "../../README.md"
+include = ["../../README.md", "src/**/*"]
 
 version.workspace = true
 edition.workspace = true
