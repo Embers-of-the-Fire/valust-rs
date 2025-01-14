@@ -16,8 +16,8 @@ sealed = { workspace = true }
 valust-derive = { workspace = true, optional = true }
 
 [dev-dependencies]
-valust-derive = { workspace = true }
-valust-utils = { workspace = true }
+valust-derive = { path = "../valust-derive" }
+valust-utils = { path = "../../crates/valust-utils" }
 
 [features]
 default = []

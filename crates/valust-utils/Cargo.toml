@@ -13,10 +13,9 @@ categories.workspace = true
 [dependencies]
 convert_case = { workspace = true, optional = true }
 
-valust = { workspace = true }
-
 [dev-dependencies]
-valust-derive = { workspace = true }
+valust-derive = { path = "../../src/valust-derive" }
+valust = { path = "../../src/valust" }
 
 [features]
 default = ["casing"]

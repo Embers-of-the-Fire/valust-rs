@@ -20,8 +20,8 @@ proc-macro2 = { workspace = true }
 either = { workspace = true }
 
 [dev-dependencies]
-valust = { workspace = true }
-valust-utils = { workspace = true }
+valust = { path = "../valust" }
+valust-utils = { path = "../../crates/valust-utils" }
 
 [lints]
 workspace = true

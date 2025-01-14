@@ -28,7 +28,7 @@ valust = { workspace = true }
 axum = { workspace = true, features = ["macros"] }
 serde = { workspace = true, features = ["derive"] }
 
-valust-derive = { workspace = true }
+valust-derive = { path = "../../src/valust-derive" }
 
 [features]
 default = ["json", "form", "sonic", "yaml", "toml", "xml", "msgpack", "cbor", "ron"]
