@@ -69,6 +69,7 @@ use the [`rename` struct attribute](#structure-attributes).
 
 ```rust
 use valust::Validate;
+use valust_derive::Valust;
 use valust_utils::convert::parse_to;
     
 #[derive(Debug, Valust)]
@@ -94,7 +95,7 @@ pub struct Outer {
 
 <details>
 
-```rust
+```rust,ignore
 #[automatically_derived]
 #[derive(Debug)]
 pub struct RawInner {
