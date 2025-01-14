@@ -1,5 +1,13 @@
 # Changelog
 
+## V 0.4.0
+
+- Add: Rework `Validate` trait.
+- Add: Add utilities for streaming check.
+- Add: Update crate-level doc.
+- Add: Add `axum` extractor support.
+- Add: Add docs for `valust-axum`.
+
 ## V 0.3.1
 
 - Remove: remove debug-only info in `valust_derive` crate.
