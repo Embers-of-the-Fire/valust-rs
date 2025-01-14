@@ -1,3 +1,3 @@
-//! Valust utilities for the [`axum`] crate.
+#![doc = include_str!("../README.md")]
 
 pub mod extractor;
