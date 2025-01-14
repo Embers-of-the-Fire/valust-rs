@@ -86,6 +86,7 @@ version = "0.3.1"
 dependencies = [
  "sealed",
  "valust-derive",
+ "valust-utils",
 ]
 
 [[package]]
@@ -96,6 +97,8 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+ "valust",
+ "valust-utils",
 ]
 
 [[package]]

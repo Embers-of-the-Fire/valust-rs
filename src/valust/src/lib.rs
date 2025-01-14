@@ -1,7 +1,4 @@
-//! # Valust
-//!
-//! The `Valust` crate provides a general data validation interface (trait
-//! `Validate` and the derived trait `ValidateFrom`).
+#![doc = include_str!("../../../README.md")]
 
 pub mod error;
 

@@ -15,8 +15,12 @@ categories.workspace = true
 sealed = { workspace = true }
 valust-derive = { workspace = true, optional = true }
 
+[dev-dependencies]
+valust-derive = { workspace = true }
+valust-utils = { workspace = true }
+
 [features]
-default = ["derive"]
+default = []
 derive = ["valust-derive"]
 
 [lints]

@@ -1,6 +1,5 @@
 //! Derive macro implementation for `Valust`.
-//!
-//! For full documentation, see the README file.
+#![doc = include_str!("../README.md")]
 
 mod config;
 mod parse;
