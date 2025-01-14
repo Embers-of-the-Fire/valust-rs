@@ -56,6 +56,7 @@ assert_eq!(profile, UserProfile {
 ### External Tools & Utilities
 
 - [`valust-utils`](https://crates.io/crates/valust-utils): Utilities that might be used when defining validators.
+- [`valust-axum`](https://crates.io/crates/valust-axum): Utilities for integrating `valust` with [`axum`](https://crates.io/crates/axum).
 
 ## Minimum Supported Rust Version (MSRV)
 
