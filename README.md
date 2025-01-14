@@ -31,13 +31,13 @@ pub struct UserProfile {
     pub magic_number: u32,
 }
 
-let raw_profile = RawUserProfile {
+let raw_profile = Raw::<UserProfile> {
     user_id: 10,
     username: UncheckedUsername("  Foo  ".into()),
     magic_number: 13,
 };
 
-let profile = raw_profile.validate().expect("Check failed");
+let profile = UserProfile::validate(raw_profile).expect("Check failed");
 
 assert_eq!(profile, UserProfile {
     user_id: 10,
@@ -50,12 +50,12 @@ assert_eq!(profile, UserProfile {
 
 ### Core
 
-- [`valust`](./src/valust/README.md): Main crate, exposing fundamental traits (`trait Validate`) and error types.
-- [`valust-derive`](./src/valust-derive/README.md): Derive macro for creating a validate-able struct.
+- [`valust`](https://crates.io/crates/valust): Main crate, exposing fundamental traits (`trait Validate`) and error types.
+- [`valust-derive`](https://crates.io/crates/valust-derive): Derive macro for creating a validate-able struct.
 
 ### External Tools & Utilities
 
-- [`valust-utils`](./crates/valust-utils/README.md): Utilities that might be used when defining validators.
+- [`valust-utils`](https://crates.io/crates/valust-utils): Utilities that might be used when defining validators.
 
 ## Minimum Supported Rust Version (MSRV)
 
