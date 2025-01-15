@@ -28,3 +28,7 @@ jobs:
       run: cargo test --verbose
     - name: Run lints
       run: cargo clippy --all-features
+    - name: Test doc build
+      run: |
+        set RUSTDOCFLAGS = --cfg=docsrs
+        cargo doc --no-deps --document-private-items
