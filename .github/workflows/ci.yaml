@@ -28,6 +28,13 @@ jobs:
       run: cargo test --verbose
     - name: Run lints
       run: cargo clippy --all-features
+  
+  doc:
+    name: Test Doc Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
     - name: Test doc build
       run: |
         set RUSTDOCFLAGS = --cfg=docsrs
