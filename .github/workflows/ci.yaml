@@ -23,8 +23,20 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build
-      run: cargo build --verbose
+      run: cargo build --all-features
     - name: Run tests
-      run: cargo test --verbose
+      run: cargo test --verbose --all-features
     - name: Run lints
       run: cargo clippy --all-features
+  
+  doc:
+    name: Test Doc Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Test doc build
+      run: |
+        set RUSTDOCFLAGS = --cfg=docsrs
+        rustup install nightly
+        cargo +nightly doc --no-deps --document-private-items --all-features
