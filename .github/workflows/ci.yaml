@@ -38,4 +38,5 @@ jobs:
     - name: Test doc build
       run: |
         set RUSTDOCFLAGS = --cfg=docsrs
+        rustup install nightly
         cargo +nightly doc --no-deps --document-private-items --all-features
