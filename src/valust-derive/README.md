@@ -41,11 +41,11 @@ use the [`rename` struct attribute](#structure-attributes).
 
 ### Structure Attributes
 
-| Name             | Syntax                              | Description                                                                                 | Example                     |
-| ---------------- | ----------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------- |
-| `forward_derive` | `forward_derive(Ident)`             | Add derive macros for the _raw_ data struct.                                                | `forward_derive(Debug)`     |
-| `pre`            | `pre(<validator>)`                  | Pre-validator, which uses _raw_ data as input.                                              | `pre(a > 10, b + c != 0.0)` |
-| `post`           | `post(<validator>)`                 | Post-validator, which uses _validated_ data as input.                                       | `post(a > 10)`              |
+| Name             | Syntax                              | Description                                                                                   | Example                     |
+| ---------------- | ----------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------- |
+| `forward_derive` | `forward_derive(Ident)`             | Add derive macros for the _raw_ data struct.                                                  | `forward_derive(Debug)`     |
+| `pre`            | `pre(<validator>)`                  | Pre-validator, which uses _raw_ data as input.                                                | `pre(a > 10, b + c != 0.0)` |
+| `post`           | `post(<validator>)`                 | Post-validator, which uses _validated_ data as input.                                         | `post(a > 10)`              |
 | `rename`         | `rename = "Ident"`, `rename(Ident)` | Rename the output _raw_ data struct. <br /> [**Why we need `rename` ?**](#why-we-need-rename) | `rename(Original)`          |
 
 ### Special Expressions
@@ -64,6 +64,12 @@ use the [`rename` struct attribute](#structure-attributes).
 - Fallible validator with message:
   - Syntax: `valid(try(<expr>, <msg>))`
   - Example: ``valid(try(s.parse::<u32>() > 10, "`s` must be non-zero-string))``
+- Regex validator: ([feature `regex`](#regex-validator))
+  - Syntax: `valid(regex(<regex text>))`
+  - Example: `valid(regex(r"^\d{4}-\d{2}-\d{2}$"))`
+- Regex validator with message: ([feature `regex`](#regex-validator))
+  - Syntax: `valid(regex(<regex text>, <msg>))`
+  - Example: `valid(regex(r"^\d{4}-\d{2}-\d{2}$", "invalid date syntax"))`
 
 #### Transformer Expression
 
@@ -239,6 +245,14 @@ field.
 
 The _raw_ data type could be inferred by the compiler, so you don't need to
 specify it even if you've `rename`d it.
+
+### Regex validator
+
+`valust-derive` supports regex-based validator expressions using [`regex`](https://crates.io/crates/regex).
+To enable regex support, you must enable the `regex` feature for both `valust` and `valust-derive`.
+
+**Note:**
+`valust > regex` feature will enable `valust-derive > regex` if `derive` feature is enabled.
 
 ### Why we need `rename`
 
