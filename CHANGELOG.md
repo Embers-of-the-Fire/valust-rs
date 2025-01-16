@@ -1,5 +1,11 @@
 # Changelog
 
+## V 0.5.0
+
+- [Doc] Fix missing support for unstable feature `doc(cfg)`.
+- [Doc] Add link to `valust-axum` crate.
+- [Feat] Add basic regex support.
+
 ## V 0.4.0
 
 - Add: Rework `Validate` trait.
