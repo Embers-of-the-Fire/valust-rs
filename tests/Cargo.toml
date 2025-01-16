@@ -11,6 +11,6 @@ path = "lib.rs"
 convert_case = { workspace = true }
 syn = { workspace = true }
 
-valust = { workspace = true }
-valust-derive = { workspace = true }
+valust = { workspace = true, features = ["regex"] }
+valust-derive = { workspace = true, features = ["regex"] }
 valust-utils = { workspace = true }

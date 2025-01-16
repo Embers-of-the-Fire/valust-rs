@@ -3,7 +3,7 @@ use quote::{ToTokens, format_ident, quote};
 use syn::{Expr, Ident, Index, Type, Visibility};
 
 use crate::utils::create_error::{create_transform_error, create_validate_error};
-use crate::utils::parser::ExprOrFunc;
+use crate::utils::parser::Expression;
 
 pub enum FieldOperationType {
     Validate,
@@ -12,7 +12,7 @@ pub enum FieldOperationType {
 
 pub struct FieldManualOperation {
     pub ty: FieldOperationType,
-    pub expr: ExprOrFunc,
+    pub expr: Expression,
     pub message: Option<Expr>,
     pub fallible: bool,
 }
@@ -36,6 +36,7 @@ impl FieldManualOperation {
         let expr = self
             .expr
             .get_expr(&field, matches!(self.ty, FieldOperationType::Validate));
+        let c_expr = expr.as_expr();
 
         let err_ident = format_ident!(
             "__valust_err_{}",
@@ -65,7 +66,7 @@ impl FieldManualOperation {
                 );
                 if self.fallible {
                     quote! {
-                        match (#expr) {
+                        match (#c_expr) {
                             Ok(true) => {},
                             Ok(false) => {
                                 #code_invalid
@@ -77,7 +78,7 @@ impl FieldManualOperation {
                     }
                 } else {
                     quote! {
-                        if !(#expr) {
+                        if !(#c_expr) {
                             #code_invalid
                         }
                     }
@@ -102,7 +103,7 @@ impl FieldManualOperation {
 
                     quote! {
                         #err_pre_format
-                        let #field = match (#expr) {
+                        let #field = match (#c_expr) {
                             Ok(value) => value,
                             Err(#err_ident) => {
                                 #code_err
@@ -112,7 +113,7 @@ impl FieldManualOperation {
                     }
                 } else {
                     quote! {
-                        let #field = #expr;
+                        let #field = #c_expr;
                     }
                 }
             }
