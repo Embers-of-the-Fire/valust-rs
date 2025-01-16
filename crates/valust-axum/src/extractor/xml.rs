@@ -1,4 +1,4 @@
-//! Parse raw data from XML with [`quick-xml`] and validate it.
+//! Parse raw data from XML with [`quick-xml`][quick_xml] and validate it.
 
 use std::ops::{Deref, DerefMut};
 
