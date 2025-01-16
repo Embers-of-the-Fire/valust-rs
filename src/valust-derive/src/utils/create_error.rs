@@ -2,6 +2,7 @@ use proc_macro2::{Ident, TokenStream};
 use quote::{ToTokens, format_ident, quote};
 use syn::{Expr, Type};
 
+use super::regex_comp::CompatibleExpr;
 use crate::config::field_config::FieldName;
 
 pub fn create_validate_error(
@@ -9,7 +10,7 @@ pub fn create_validate_error(
     field: &FieldName,
     cause: Option<&Ident>,
     message: Option<&Expr>,
-    expr: &Expr,
+    expr: &CompatibleExpr,
     ty: &Type,
     display: bool,
 ) -> TokenStream {
@@ -21,7 +22,7 @@ pub fn create_validate_error(
     let message = message
         .map(|m| quote! { ::std::option::Option::Some(#m) })
         .unwrap_or(quote! { ::std::option::Option::None });
-    let expr_text = expr.to_token_stream().to_string();
+    let expr_text = expr.to_expr_text();
     let type_text = ty.to_token_stream().to_string();
     let value_format = if display {
         let value_formatter = format!("({}) {{:?}}", type_text);
@@ -78,7 +79,7 @@ pub fn create_transform_error(
     field: &FieldName,
     message: Option<&Expr>,
     err: &Ident,
-    expr: &Expr,
+    expr: &CompatibleExpr,
     (origin_ty, out_ty): (&Type, &Type),
     display: bool,
 ) -> (Option<Ident>, TokenStream) {
@@ -87,7 +88,7 @@ pub fn create_transform_error(
     let message = message
         .map(|m| quote! { ::std::option::Option::Some(#m) })
         .unwrap_or(quote! { ::std::option::Option::None });
-    let expr_text = expr.to_token_stream().to_string();
+    let expr_text = expr.to_expr_text();
     let orig_type_text = origin_ty.to_token_stream().to_string();
     let out_type_text = out_ty.to_token_stream().to_string();
     let (ident_clone, value_format) = if display {

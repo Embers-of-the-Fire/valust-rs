@@ -5,7 +5,7 @@ use syn::{Expr, Token, Type, parenthesized, token};
 use crate::config::field_config::{
     FieldManualOperation, FieldOperation, FieldOperationType,
 };
-use crate::utils::parser::ExprOrFunc;
+use crate::utils::parser::Expression;
 
 pub struct TransformerAttr {
     pub items: Punctuated<TransformerItem, Token![,]>,
@@ -31,7 +31,7 @@ impl TransformerAttr {
 pub struct TransformerExpr {
     pub from_type: Type,
     pub _trans: Token![=>],
-    pub expr: ExprOrFunc,
+    pub expr: Expression,
 }
 
 impl Parse for TransformerExpr {

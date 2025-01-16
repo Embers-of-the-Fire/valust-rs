@@ -15,6 +15,7 @@ categories.workspace = true
 [dependencies]
 sealed = { workspace = true }
 valust-derive = { workspace = true, optional = true }
+regex = { workspace = true, optional = true }
 
 [dev-dependencies]
 valust-derive = { path = "../valust-derive" }
@@ -23,6 +24,7 @@ valust-utils = { path = "../../crates/valust-utils" }
 [features]
 default = []
 derive = ["valust-derive"]
+regex = ["dep:regex", "valust-derive/regex"]
 
 [lints]
 workspace = true

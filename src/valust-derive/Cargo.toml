@@ -23,5 +23,9 @@ either = { workspace = true }
 valust = { path = "../valust" }
 valust-utils = { path = "../../crates/valust-utils" }
 
+[features]
+default = []
+regex = []
+
 [lints]
 workspace = true

@@ -2,6 +2,8 @@
 
 pub mod error;
 
+#[cfg(feature = "regex")]
+pub use regex;
 #[cfg(feature = "derive")]
 pub use valust_derive as derive;
 

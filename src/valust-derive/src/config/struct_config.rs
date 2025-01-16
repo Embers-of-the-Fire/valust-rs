@@ -15,7 +15,7 @@ use crate::utils::parse_error::{
     AttrPlacement, create_invalid_attr_call_error, create_misplaced_error,
     get_attr_placement,
 };
-use crate::utils::parser::ExprOrFunc;
+use crate::utils::parser::Expression;
 
 pub struct StructConfig {
     pub name: Ident,
@@ -185,12 +185,17 @@ pub struct StructOperation {
 
 impl StructOperation {
     pub fn from_validator_item(item: ValidatorItem) -> syn::Result<Self> {
-        fn func_only(expr: ExprOrFunc) -> syn::Result<Expr> {
+        fn func_only(expr: Expression) -> syn::Result<Expr> {
             match expr {
-                ExprOrFunc::Expr(e) => Ok(e),
-                ExprOrFunc::Func(f) => {
-                    Err(syn::Error::new(f.span(), "Function is not allowed here"))
+                Expression::Expr(e) => Ok(e),
+                Expression::Func(f) => {
+                    Err(syn::Error::new(f.span(), "function is not allowed here"))
                 }
+                #[cfg(feature = "regex")]
+                Expression::Regex(r) => Err(syn::Error::new(
+                    r.span(),
+                    "regex expression is not allowed here",
+                )),
             }
         }
 
@@ -209,6 +214,11 @@ impl StructOperation {
                 expr: func_only(fallible.expr.expr)?,
                 message: fallible.message,
                 fallible: true,
+            }),
+            ValidatorItem::Regex(regex) => Ok(Self {
+                expr: func_only(regex.text)?,
+                message: regex.message,
+                fallible: false,
             }),
         }
     }
