@@ -89,6 +89,7 @@ impl ValidatorItem {
                     fallible: true,
                 }
             }
+            #[cfg(feature = "regex")]
             Self::Regex(RegexValidator { text, message, .. }) => FieldManualOperation {
                 ty: FieldOperationType::Validate,
                 expr: text,

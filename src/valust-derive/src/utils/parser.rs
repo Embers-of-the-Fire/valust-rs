@@ -1,5 +1,5 @@
 use syn::parse::{Parse, ParseStream};
-use syn::{Expr, Ident, LitStr, Token, parenthesized, parse_quote};
+use syn::{Expr, Ident, Token, parenthesized, parse_quote};
 
 use super::regex_comp::CompatibleExpr;
 
@@ -7,7 +7,7 @@ pub enum Expression {
     Expr(Expr),
     Func(Expr),
     #[cfg(feature = "regex")]
-    Regex(LitStr),
+    Regex(syn::LitStr),
 }
 
 impl Parse for Expression {
