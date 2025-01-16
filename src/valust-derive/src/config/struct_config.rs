@@ -215,6 +215,7 @@ impl StructOperation {
                 message: fallible.message,
                 fallible: true,
             }),
+            #[cfg(feature = "regex")]
             ValidatorItem::Regex(regex) => Ok(Self {
                 expr: func_only(regex.text)?,
                 message: regex.message,

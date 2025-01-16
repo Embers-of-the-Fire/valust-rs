@@ -1,18 +1,21 @@
 use proc_macro2::TokenStream;
-use quote::{ToTokens, format_ident, quote};
-use syn::{Expr, Ident, LitStr};
+use quote::ToTokens;
+#[cfg(feature = "regex")]
+use quote::{format_ident, quote};
+use syn::Expr;
 
 pub enum CompatibleExpr {
     Expr(Expr),
     #[cfg(feature = "regex")]
     #[allow(dead_code)]
-    Regex(LitStr, Ident),
+    Regex(syn::LitStr, syn::Ident),
 }
 
 impl CompatibleExpr {
     pub fn as_expr(&self) -> TokenStream {
         match self {
             Self::Expr(e) => e.to_token_stream(),
+            #[cfg(feature = "regex")]
             Self::Regex(text, input) => {
                 let lock_init = quote! {
                     ::std::sync::LazyLock::new(|| {
