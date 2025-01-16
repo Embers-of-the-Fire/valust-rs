@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "formatting rust code"
+cargo +nightly fmt

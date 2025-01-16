@@ -3,7 +3,7 @@
 #[cfg(feature = "json")]
 #[cfg_attr(docsrs, doc(cfg(feature = "json")))]
 pub mod json;
-use axum::http::{header, HeaderMap};
+use axum::http::{HeaderMap, header};
 #[cfg(feature = "json")]
 #[cfg_attr(docsrs, doc(cfg(feature = "json")))]
 pub use json::ValidJson;
@@ -60,15 +60,17 @@ pub use cbor::ValidCbor;
 #[cfg(feature = "ron")]
 #[cfg_attr(docsrs, doc(cfg(feature = "ron")))]
 pub mod ron;
+use mime::Mime;
 #[cfg(feature = "ron")]
 #[cfg_attr(docsrs, doc(cfg(feature = "ron")))]
 pub use ron::ValidRon;
 
-use mime::Mime;
-
 pub mod rejection;
 
-fn check_content_type(headers: &HeaderMap, expected_content_type: &'static str) -> bool {
+fn check_content_type(
+    headers: &HeaderMap,
+    expected_content_type: &'static str,
+) -> bool {
     let content_type = if let Some(content_type) = headers.get(header::CONTENT_TYPE) {
         content_type
     } else {

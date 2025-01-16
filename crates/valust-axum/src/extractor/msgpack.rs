@@ -78,11 +78,14 @@ where
 
     async fn from_request(req: Request, state: &S) -> Result<Self, Self::Rejection> {
         if !check_content_type(req.headers(), "application/msgpack") {
-            return Err(ValidateRejection::UnsupportedMediaType("application/msgpack"));
+            return Err(ValidateRejection::UnsupportedMediaType(
+                "application/msgpack",
+            ));
         }
 
         let raw = Bytes::from_request(req, state).await?;
-        let data = rmp_serde::from_slice(&raw).map_err(ValidateRejection::InvalidContentFormat)?;
+        let data = rmp_serde::from_slice(&raw)
+            .map_err(ValidateRejection::InvalidContentFormat)?;
 
         let data = T::validate(data)?;
 

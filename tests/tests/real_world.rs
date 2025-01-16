@@ -1,6 +1,6 @@
 #[test]
 fn real_world_test() -> Result<(), Box<dyn std::error::Error>> {
-    use valust::{Validate, Raw};
+    use valust::{Raw, Validate};
     use valust_derive::Valust;
 
     #[derive(Debug, Valust, PartialEq)]
