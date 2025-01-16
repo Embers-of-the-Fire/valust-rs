@@ -5,6 +5,7 @@ members = [
     "tests",
     "crates/valust-utils",
     "crates/valust-axum",
+    "crates/valust-regex-utils",
 ]
 resolver = "2"
 

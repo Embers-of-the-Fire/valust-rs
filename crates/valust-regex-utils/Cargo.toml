@@ -1,0 +1,16 @@
+[package]
+name = "valust-regex-utils"
+keywords = ["validator", "data", "regex", "utils"]
+description = "Regex utilities for the Valust crate"
+
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+categories.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true
