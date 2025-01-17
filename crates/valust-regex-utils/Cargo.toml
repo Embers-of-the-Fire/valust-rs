@@ -12,5 +12,8 @@ categories.workspace = true
 
 [dependencies]
 
+[dev-dependencies]
+regex = { version = "1.11.1" }
+
 [lints]
 workspace = true
