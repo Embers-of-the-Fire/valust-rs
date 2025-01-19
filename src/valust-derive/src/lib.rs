@@ -1,15 +1,18 @@
 //! Derive macro implementation for `Valust`.
 #![doc = include_str!("../README.md")]
 
-mod config;
-mod parse;
+// mod config;
+// mod parse;
+mod cmd;
+mod syntax;
 mod utils;
 
 use proc_macro::TokenStream;
 use syn::{DeriveInput, parse_macro_input};
+use syntax::structure::Structure;
 
-const FIELD_ATTRS: &[&str] = &["valid", "trans", "forward", "display"];
-const STRUCT_ATTRS: &[&str] = &["pre", "post", "rename", "forward_derive"];
+// const FIELD_ATTRS: &[&str] = &["valid", "trans", "forward", "display"];
+// const STRUCT_ATTRS: &[&str] = &["pre", "post", "rename", "forward_derive"];
 
 /// Main entry point for the `Valust` macro.
 ///
@@ -21,10 +24,14 @@ const STRUCT_ATTRS: &[&str] = &["pre", "post", "rename", "forward_derive"];
 pub fn valust_derive(item: TokenStream) -> TokenStream {
     let input = parse_macro_input!(item as DeriveInput);
 
-    let expanded = parse::parse_input(input);
+    let data = match Structure::from_input(input) {
+        Ok(t) => t,
+        Err(e) => return e.to_compile_error().into(),
+    };
+    let expanded = match data.gen_validate_impl() {
+        Ok(t) => t,
+        Err(e) => return e.to_compile_error().into(),
+    };
 
-    match expanded {
-        Ok(e) => TokenStream::from(e),
-        Err(e) => e.to_compile_error().into(),
-    }
+    expanded.into()
 }

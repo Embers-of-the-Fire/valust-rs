@@ -7,8 +7,8 @@ fn real_world_test() -> Result<(), Box<dyn std::error::Error>> {
     #[forward_derive(Debug)]
     #[rename(UncheckedUsername)]
     pub struct Username(
-        #[trans(String => _0.trim().to_owned())]
-        #[valid((!_0.is_empty(), "username must not be empty"))]
+        #[trans(expr(String => _0.trim().to_owned()))]
+        #[valid(expr(!_0.is_empty(), "username must not be empty"))]
         pub String,
     );
 
@@ -24,7 +24,7 @@ fn real_world_test() -> Result<(), Box<dyn std::error::Error>> {
 
     let raw_profile = Raw::<UserProfile> {
         user_id: 10,
-        username: UncheckedUsername("  Foo  ".into()),
+        username: RawUsername("  Foo  ".into()),
         magic_number: 13,
     };
 

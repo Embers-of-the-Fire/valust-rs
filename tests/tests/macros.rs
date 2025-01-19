@@ -11,11 +11,11 @@ fn test_macro() {
     #[derive(Debug, Valust)]
     #[post(_0 + _1 as f64 > 10.0)]
     pub struct W(
-        #[trans((f64 => _0.abs()))]
-        #[valid((_0 > 10.0, "Failed check"))]
+        #[trans(expr(f64 => _0.abs()))]
+        #[valid(expr(_0 > 10.0, "Failed check"))]
         pub f64,
-        #[trans(try(String => _1.parse::<u32>()))]
-        #[valid(_1 < 0)]
+        #[trans(expr(String => try(_1.parse::<u32>())))]
+        #[valid(expr(_1 < 0))]
         pub u32,
     );
 
@@ -34,7 +34,7 @@ fn test_nested() {
     #[forward_derive(Debug)]
     pub struct Inner {
         #[display = true]
-        #[valid((code > 10.0, "code must be greater than 10.0"))]
+        #[valid(expr(code > 10.0, "code must be greater than 10.0"))]
         pub code: f64,
     }
 
@@ -43,8 +43,8 @@ fn test_nested() {
     pub struct Outer {
         #[forward]
         pub inner: Inner,
-        #[trans(String => extra.trim())]
-        #[trans(try(String => fn(parse_to::<u32>)))]
+        #[trans(expr(String => extra.trim()))]
+        #[trans(func(String => try(parse_to::<u32>)))]
         pub extra: u32,
     }
 
