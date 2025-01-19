@@ -1079,6 +1079,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "valust-regex-utils"
+version = "0.4.0"
+dependencies = [
+ "regex",
+]
+
+[[package]]
 name = "valust-utils"
 version = "0.5.0"
 dependencies = [
