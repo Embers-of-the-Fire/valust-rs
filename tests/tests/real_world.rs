@@ -24,7 +24,7 @@ fn real_world_test() -> Result<(), Box<dyn std::error::Error>> {
 
     let raw_profile = Raw::<UserProfile> {
         user_id: 10,
-        username: RawUsername("  Foo  ".into()),
+        username: UncheckedUsername("  Foo  ".into()),
         magic_number: 13,
     };
 

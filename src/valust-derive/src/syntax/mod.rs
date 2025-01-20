@@ -1,3 +1,4 @@
 pub mod field;
-pub mod field_attr;
+mod field_attr;
+mod struct_attr;
 pub mod structure;

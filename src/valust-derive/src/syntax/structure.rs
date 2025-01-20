@@ -3,6 +3,7 @@ use quote::{format_ident, quote};
 use syn::{Data, DeriveInput, Fields, Ident, Visibility};
 
 use super::field::Field;
+use super::struct_attr::StructAttr;
 use crate::utils::error::SyntaxError;
 
 const UNSUPPORTED_STRUCT_TYPE: &str = "\
@@ -14,6 +15,7 @@ pub struct Structure {
     pub name: Ident,
     pub is_named: bool,
     pub fields: Vec<Field>,
+    pub attrs: StructAttr,
 }
 
 impl Structure {
@@ -53,6 +55,7 @@ impl Structure {
                 err.check()?;
                 out
             },
+            attrs: StructAttr::from_attrs(s.attrs.iter())?,
         })
     }
 
@@ -63,7 +66,9 @@ impl Structure {
 
         let mut error = SyntaxError::new();
 
-        let raw_name = format_ident!("Raw{}", self.name, span = self.name.span());
+        let raw_name = self.attrs.rename.clone().unwrap_or_else(|| {
+            format_ident!("Raw{}", self.name, span = self.name.span())
+        });
         let raw_decl = {
             let decls = self.fields.iter().map(|t| {
                 let ty = t.get_raw_type();
