@@ -80,10 +80,15 @@ impl Structure {
                     quote! { #vis #ty }
                 }
             });
-            if self.is_named {
-                quote! { #st_vis struct #raw_name { #(#decls,)* } }
+            let derives = &self.attrs.forward_derive;
+            let decl = if self.is_named {
+                quote! { { #(#decls,)* } }
             } else {
-                quote! { #st_vis struct #raw_name(#(#decls),*); }
+                quote! { (#(#decls),*); }
+            };
+            quote! {
+                #[derive(#(#derives),*)]
+                #st_vis struct #raw_name #decl
             }
         };
 

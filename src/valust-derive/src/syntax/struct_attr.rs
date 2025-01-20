@@ -1,5 +1,6 @@
+use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
-use syn::{Attribute, Expr, ExprLit, Ident, Lit, Meta, parse_str};
+use syn::{Attribute, Expr, ExprLit, Ident, Lit, Meta, Path, Token, parse_str};
 
 const META_SYNTAX_ERR_RENAME: &str = "\
     Invalid `rename` usage.\n\
@@ -7,6 +8,7 @@ const META_SYNTAX_ERR_RENAME: &str = "\
 
 pub struct StructAttr {
     pub rename: Option<Ident>,
+    pub forward_derive: Vec<Path>,
 }
 
 impl StructAttr {
@@ -14,6 +16,8 @@ impl StructAttr {
         attrs: impl Iterator<Item = &'a Attribute>,
     ) -> syn::Result<Self> {
         let mut rename: Option<Ident> = None;
+        let mut forward_derive: Vec<Path> = vec![];
+
         for attr in attrs {
             if attr.path().is_ident("rename") {
                 match &attr.meta {
@@ -53,8 +57,18 @@ impl StructAttr {
                     }
                 }
             }
+
+            if attr.path().is_ident("forward_derive") {
+                let lst = attr.meta.require_list()?;
+                let args = lst
+                    .parse_args_with(Punctuated::<Path, Token![,]>::parse_terminated)?;
+                forward_derive.extend(args.into_iter());
+            }
         }
 
-        Ok(Self { rename })
+        Ok(Self {
+            rename,
+            forward_derive,
+        })
     }
 }
