@@ -47,7 +47,7 @@ pub struct FuncHandler {
 impl ValidHandler for FuncHandler {
     fn gen_validator_expr(&self, field: &Ident) -> TokenStream {
         let func = &self.expr;
-        quote! { (#func)(#field) }
+        quote! { (#func)(&#field) }
     }
 
     fn is_fallible(&self) -> bool {

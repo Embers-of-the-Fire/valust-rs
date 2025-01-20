@@ -7,7 +7,7 @@ mod func;
 mod regex;
 
 pub const VALID_COMMANDS: &[&dyn ValidCommand] =
-    &[&regex::RegexCommand, &expr::ExprCommand];
+    &[&regex::RegexCommand, &expr::ExprCommand, &func::FuncCommand];
 
 pub trait ValidCommand {
     fn ident(&self) -> &'static str;

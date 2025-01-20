@@ -7,13 +7,13 @@ use convert_case::Casing;
 /// Converts a string to a specified case.
 ///
 /// ```rust
-/// use valust_utils::casing::{Case, to_case};
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use valust_utils::casing::{Case, to_case};
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct Casing(
-///     #[trans(String => fn(to_case(Case::Pascal)))]
+///     #[trans(func(String => to_case(Case::Pascal)))]
 ///     String
 /// );
 /// let case = RawCasing("snake_case".to_string());

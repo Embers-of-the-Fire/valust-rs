@@ -1090,6 +1090,7 @@ name = "valust-utils"
 version = "0.5.0"
 dependencies = [
  "convert_case",
+ "sealed",
  "valust",
  "valust-derive",
 ]
