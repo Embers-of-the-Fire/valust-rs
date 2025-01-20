@@ -2,3 +2,4 @@
 
 echo "formatting rust code"
 cargo +nightly fmt
+echo "finish formatting"
