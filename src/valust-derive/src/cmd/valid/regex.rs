@@ -1,5 +1,5 @@
 use proc_macro2::TokenStream;
-use quote::{format_ident, quote};
+use quote::{ToTokens, format_ident, quote};
 use syn::parse::ParseStream;
 use syn::spanned::Spanned;
 use syn::{Expr, Ident, LitStr, Token};
@@ -14,7 +14,6 @@ impl ValidCommand for RegexCommand {
     }
 
     fn parse_inner(&self, tt: ParseStream) -> syn::Result<Box<dyn ValidHandler>> {
-        // tt.parse::<Ident>()?;
         let content;
         syn::parenthesized!(content in tt);
         let regex = content.parse::<Expr>()?;
@@ -32,7 +31,7 @@ impl ValidCommand for RegexCommand {
     }
 }
 
-pub struct RegexHandler {
+struct RegexHandler {
     regex: Expr,
     message: Option<LitStr>,
 }
@@ -56,6 +55,10 @@ impl ValidHandler for RegexHandler {
             || format!("`{}` does not match the regex", field),
             |lit| lit.value(),
         ))
+    }
+
+    fn gen_expr_display(&self, _field: &Ident) -> Option<String> {
+        Some(format!("<regex>/{}/", self.regex.to_token_stream()))
     }
 
     fn is_fallible(&self) -> bool {

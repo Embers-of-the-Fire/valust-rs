@@ -74,9 +74,17 @@ impl FieldHandler for ValidCmdHandler {
     fn gen_expr(&self, err: &Ident, field: &FieldName) -> syn::Result<TokenStream> {
         let code = self.handlers.iter().map(|t| {
             let expr = t.gen_validator_expr(&field.name());
+            let expr_text = t.gen_expr_display(&field.name())
+                    .unwrap_or_else(|| expr.to_token_stream().to_string());
             let msg = t.message(&field.name());
             let invalid_err = create_validate_error(
-                err, field, None, msg, &expr, &self.ty, true,
+                err,
+                field,
+                None,
+                msg,
+                &expr_text,
+                &self.ty,
+                true,
             );
 
             if t.is_fallible() {
@@ -87,7 +95,7 @@ impl FieldHandler for ValidCmdHandler {
                     field,
                     Some(&cause),
                     None,
-                    &expr,
+                    &expr_text,
                     &self.ty,
                     true,
                 );

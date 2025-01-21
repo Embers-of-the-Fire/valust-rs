@@ -38,7 +38,7 @@ impl ValidCommand for FuncCommand {
     }
 }
 
-pub struct FuncHandler {
+struct FuncHandler {
     expr: Expr,
     fallible: bool,
     message: Option<LitStr>,

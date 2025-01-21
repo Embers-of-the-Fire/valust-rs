@@ -18,7 +18,9 @@ proc-macro = true
 syn = { workspace = true }
 quote = { workspace = true }
 proc-macro2 = { workspace = true }
-either = { workspace = true }
+paste = { workspace = true }
+
+valust-regex-utils = { workspace = true, optional = true }
 
 [dev-dependencies]
 valust = { path = "../valust" }
@@ -27,6 +29,10 @@ valust-utils = { path = "../../crates/valust-utils" }
 [features]
 default = []
 regex = []
+regex-utils = ["regex", "dep:valust-regex-utils"]
+email = []
+url = []
+username = []
 
 [lints]
 workspace = true
