@@ -1,5 +1,10 @@
 # Changelog
 
+## V 0.6.0
+
+- [Feat] Add support for regex exprs.
+- [Feat] Rework the derive macro.
+
 ## V 0.5.0
 
 - [Doc] Fix missing support for unstable feature `doc(cfg)`.

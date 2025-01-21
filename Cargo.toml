@@ -10,7 +10,7 @@ members = [
 resolver = "2"
 
 [workspace.package]
-version = "0.5.0"
+version = "0.6.0"
 edition = "2021"
 
 authors = ["Embers-of-the-Fire <stellarishs@163.com>"]
@@ -44,10 +44,10 @@ mime = { version = "0.3.17" }
 regex = { version = "1.11.1" }
 
 # Internal dependencies
-valust = { path = "src/valust", version = "0.5.0" }
-valust-derive = { path = "src/valust-derive", version = "0.5.0" }
-valust-utils = { path = "crates/valust-utils", version = "0.5.0" }
-valust-axum = { path = "crates/valust-axum", version = "0.5.0" }
+valust = { path = "src/valust", version = "0.6.0" }
+valust-derive = { path = "src/valust-derive", version = "0.6.0" }
+valust-utils = { path = "crates/valust-utils", version = "0.6.0" }
+valust-axum = { path = "crates/valust-axum", version = "0.6.0" }
 
 [workspace.lints.rust]
 missing_docs = "warn"
