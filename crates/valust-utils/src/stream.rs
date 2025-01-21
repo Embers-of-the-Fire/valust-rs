@@ -14,13 +14,13 @@ use std::collections::{BTreeMap, HashMap, HashSet};
 /// Checks if all elements in the [`Vec`] satisfy the predicate.
 ///
 /// ```rust
-/// use valust_utils::stream::all_vec;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use valust_utils::stream::all_vec;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(fn(all_vec(|&x| x > 1)))]
+///     #[valid(func(all_vec(|&x| x > 1)))]
 ///     data: Vec<u8>
 /// }
 ///
@@ -36,13 +36,13 @@ pub fn all_vec<I>(predicate: fn(&I) -> bool) -> impl Fn(&Vec<I>) -> bool {
 /// Checks if all elements in the [`Vec`] satisfy the predicate (fallible ones accepted).
 ///
 /// ```rust
-/// use valust_utils::stream::try_vec;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use valust_utils::stream::try_vec;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(try(fn(try_vec(|x: &String| x.parse::<i32>().map(|u| u > 1)))))]
+///     #[valid(func(try(try_vec(|x: &String| x.parse::<i32>().map(|u| u > 1)))))]
 ///     data: Vec<String>
 /// }
 ///
@@ -68,13 +68,13 @@ pub fn try_vec<I, E>(
 /// Convert all elements in the [`Vec`] to a new type.
 ///
 /// ```rust
-/// use valust_utils::stream::map_vec;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use valust_utils::stream::map_vec;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct Map {
-///     #[trans(Vec<String> => fn(map_vec(|x: String| x.trim().to_string())))]
+///     #[trans(func(Vec<String> => map_vec(|x: String| x.trim().to_string())))]
 ///     items: Vec<String>
 /// }
 ///
@@ -89,13 +89,13 @@ pub fn map_vec<I, O>(op: fn(I) -> O) -> impl Fn(Vec<I>) -> Vec<O> {
 /// Checks if all elements in the [`Vec`] satisfy the predicate (fallible ones accepted).
 ///
 /// ```rust
-/// use valust_utils::stream::try_map_vec;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use valust_utils::stream::try_map_vec;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[trans(try(Vec<String> => fn(try_map_vec(|x: String| x.parse::<i32>()))))]
+///     #[trans(func(Vec<String> => try(try_map_vec(|x: String| x.parse::<i32>()))))]
 ///     data: Vec<i32>
 /// }
 ///
@@ -113,14 +113,14 @@ pub fn try_map_vec<I, O, E>(
 /// Checks if all elements in the [`HashSet`] satisfy the predicate.
 ///
 /// ```rust
-/// use std::collections::HashSet;
-/// use valust_utils::stream::all_set;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::HashSet;
+/// # use valust_utils::stream::all_set;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(fn(all_set(|&x| x > 1)))]
+///     #[valid(func(all_set(|&x| x > 1)))]
 ///     data: HashSet<u8>
 /// }
 ///
@@ -136,14 +136,14 @@ pub fn all_set<I>(predicate: fn(&I) -> bool) -> impl Fn(&HashSet<I>) -> bool {
 /// Checks if all elements in the [`HashSet`] satisfy the predicate (fallible ones accepted).
 ///
 /// ```rust
-/// use std::collections::HashSet;
-/// use valust_utils::stream::try_set;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::HashSet;
+/// # use valust_utils::stream::try_set;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(try(fn(try_set(|x: &String| x.parse::<i32>().map(|u| u > 1)))))]
+///     #[valid(func(try(try_set(|x: &String| x.parse::<i32>().map(|u| u > 1)))))]
 ///     data: HashSet<String>
 /// }
 ///
@@ -169,14 +169,14 @@ pub fn try_set<I, E>(
 /// Checks if all entries in the [`HashMap`] satisfy the predicate.
 ///
 /// ```rust
-/// use std::collections::HashMap;
-/// use valust_utils::stream::all_map;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::HashMap;
+/// # use valust_utils::stream::all_map;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(fn(all_map(|&k, &v| k > 1 && v > 1)))]
+///     #[valid(func(all_map(|&k, &v| k > 1 && v > 1)))]
 ///     data: HashMap<u8, u8>
 /// }
 ///
@@ -192,14 +192,14 @@ pub fn all_map<K, V>(predicate: fn(&K, &V) -> bool) -> impl Fn(&HashMap<K, V>) -
 /// Checks if all entries in the [`HashMap`] satisfy the predicate (fallible ones accepted).
 ///
 /// ```rust
-/// use std::collections::HashMap;
-/// use valust_utils::stream::try_map;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::HashMap;
+/// # use valust_utils::stream::try_map;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(try(fn(try_map(|k: &String, v: &String| k.parse::<i32>().map(|u| u > 1 && v.parse::<i32>().unwrap() > 1)))))]
+///     #[valid(func(try(try_map(|k: &String, v: &String| k.parse::<i32>().map(|u| u > 1 && v.parse::<i32>().unwrap() > 1)))))]
 ///     data: HashMap<String, String>
 /// }
 ///
@@ -225,14 +225,14 @@ pub fn try_map<K, V, E>(
 /// Checks if all keys in the [`HashMap`] satisfy the predicate.
 ///
 /// ```rust
-/// use std::collections::HashMap;
-/// use valust_utils::stream::all_map_keys;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::HashMap;
+/// # use valust_utils::stream::all_map_keys;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(fn(all_map_keys(|&k| k > 1)))]
+///     #[valid(func(all_map_keys(|&k| k > 1)))]
 ///     data: HashMap<u8, u8>
 /// }
 ///
@@ -249,14 +249,14 @@ pub fn all_map_keys<K, V>(
 /// Checks if all keys in the [`HashMap`] satisfy the predicate (fallible ones accepted).
 ///
 /// ```rust
-/// use std::collections::HashMap;
-/// use valust_utils::stream::try_all_map_keys;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::HashMap;
+/// # use valust_utils::stream::try_all_map_keys;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(try(fn(try_all_map_keys(|k: &String| k.parse::<i32>().map(|u| u > 1)))))]
+///     #[valid(func(try(try_all_map_keys(|k: &String| k.parse::<i32>().map(|u| u > 1)))))]
 ///     data: HashMap<String, u8>
 /// }
 ///
@@ -282,14 +282,14 @@ pub fn try_all_map_keys<K, V, E>(
 /// Checks if all values in the [`HashMap`] satisfy the predicate.
 ///
 /// ```rust
-/// use std::collections::HashMap;
-/// use valust_utils::stream::all_map_values;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::HashMap;
+/// # use valust_utils::stream::all_map_values;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(fn(all_map_values(|&v| v > 3)))]
+///     #[valid(func(all_map_values(|&v| v > 3)))]
 ///     data: HashMap<u8, u8>
 /// }
 ///
@@ -307,14 +307,14 @@ pub fn all_map_values<K, V>(
 /// Checks if all values in the [`HashMap`] satisfy the predicate (fallible ones accepted).
 ///
 /// ```rust
-/// use std::collections::HashMap;
-/// use valust_utils::stream::try_all_map_values;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::HashMap;
+/// # use valust_utils::stream::try_all_map_values;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(try(fn(try_all_map_values(|v: &String| v.parse::<i32>().map(|u| u > 3)))))]
+///     #[valid(func(try(try_all_map_values(|v: &String| v.parse::<i32>().map(|u| u > 3)))))]
 ///     data: HashMap<u8, String>
 /// }
 ///
@@ -340,14 +340,14 @@ pub fn try_all_map_values<K, V, E>(
 /// Checks if all entries in the [`BTreeMap`] satisfy the predicate.
 ///
 /// ```rust
-/// use std::collections::BTreeMap;
-/// use valust_utils::stream::all_btree_map;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::BTreeMap;
+/// # use valust_utils::stream::all_btree_map;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(fn(all_btree_map(|&k, &v| k > 1 && v > 1)))]
+///     #[valid(func(all_btree_map(|&k, &v| k > 1 && v > 1)))]
 ///     data: BTreeMap<u8, u8>
 /// }
 ///
@@ -365,14 +365,14 @@ pub fn all_btree_map<K, V>(
 /// Checks if all entries in the [`BTreeMap`] satisfy the predicate (fallible ones accepted).
 ///
 /// ```rust
-/// use std::collections::BTreeMap;
-/// use valust_utils::stream::try_btree_map;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::BTreeMap;
+/// # use valust_utils::stream::try_btree_map;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(try(fn(try_btree_map(|k: &String, v: &String| k.parse::<i32>().map(|u| u > 1 && v.parse::<i32>().unwrap() > 1)))))]
+///     #[valid(func(try(try_btree_map(|k: &String, v: &String| k.parse::<i32>().map(|u| u > 1 && v.parse::<i32>().unwrap() > 1)))))]
 ///     data: BTreeMap<String, String>
 /// }
 ///
@@ -398,14 +398,14 @@ pub fn try_btree_map<K, V, E>(
 /// Checks if all keys in the [`BTreeMap`] satisfy the predicate.
 ///
 /// ```rust
-/// use std::collections::BTreeMap;
-/// use valust_utils::stream::all_btree_map_keys;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::BTreeMap;
+/// # use valust_utils::stream::all_btree_map_keys;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(fn(all_btree_map_keys(|&k| k > 1)))]
+///     #[valid(func(all_btree_map_keys(|&k| k > 1)))]
 ///     data: BTreeMap<u8, u8>
 /// }
 ///
@@ -423,14 +423,14 @@ pub fn all_btree_map_keys<K, V>(
 /// Checks if all values in the [`BTreeMap`] satisfy the predicate.
 ///
 /// ```rust
-/// use std::collections::BTreeMap;
-/// use valust_utils::stream::all_btree_map_values;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::BTreeMap;
+/// # use valust_utils::stream::all_btree_map_values;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(fn(all_btree_map_values(|&v| v > 3)))]
+///     #[valid(func(all_btree_map_values(|&v| v > 3)))]
 ///     data: BTreeMap<u8, u8>
 /// }
 ///
@@ -448,14 +448,14 @@ pub fn all_btree_map_values<K, V>(
 /// Checks if all keys in the [`BTreeMap`] satisfy the predicate (fallible ones accepted).
 ///
 /// ```rust
-/// use std::collections::BTreeMap;
-/// use valust_utils::stream::try_btree_map_keys;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::BTreeMap;
+/// # use valust_utils::stream::try_btree_map_keys;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(try(fn(try_btree_map_keys(|k: &String| k.parse::<i32>().map(|u| u > 1)))))]
+///     #[valid(func(try(try_btree_map_keys(|k: &String| k.parse::<i32>().map(|u| u > 1)))))]
 ///     data: BTreeMap<String, u8>
 /// }
 ///
@@ -481,14 +481,14 @@ pub fn try_btree_map_keys<K, V, E>(
 /// Checks if all values in the [`BTreeMap`] satisfy the predicate (fallible ones accepted).
 ///
 /// ```rust
-/// use std::collections::BTreeMap;
-/// use valust_utils::stream::try_btree_map_values;
-/// use valust::{Validate, Raw, error::display::ErrorDisplay};
-/// use valust_derive::Valust;
-///
+/// # use std::collections::BTreeMap;
+/// # use valust_utils::stream::try_btree_map_values;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Debug, Valust)]
 /// struct All {
-///     #[valid(try(fn(try_btree_map_values(|v: &String| v.parse::<i32>().map(|u| u > 3)))))]
+///     #[valid(func(try(try_btree_map_values(|v: &String| v.parse::<i32>().map(|u| u > 3)))))]
 ///     data: BTreeMap<u8, String>
 /// }
 ///

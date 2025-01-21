@@ -4,10 +4,14 @@ use std::str::FromStr;
 
 /// Parses a string slice into the specified type `F`.
 ///
-/// ```rust,ignore
+/// ```rust
+/// # use valust_utils::convert::parse_to;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Valust)]
 /// struct Stringify {
-///     #[trans(try(String => fn(parses_to::<i32>)))]
+///     #[trans(func(String => try(parse_to::<i32>)))]
 ///     num: i32,
 /// }
 /// ```
@@ -17,11 +21,15 @@ pub fn parse_to<F: FromStr>(s: impl AsRef<str>) -> Result<F, F::Err> {
 
 /// Converts a value of type `F` into type `T`.
 ///
-/// ```rust,ignore
+/// ```rust
+/// # use valust_utils::convert::into;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Valust)]
 /// struct Stringify {
-///     #[trans(A => fn(into::<B>))]
-///     num: B,
+///     #[trans(func(&'static str => into))]
+///     num: String,
 /// }
 /// ```
 pub fn into<F: Into<T>, T>(f: F) -> T {
@@ -30,11 +38,15 @@ pub fn into<F: Into<T>, T>(f: F) -> T {
 
 /// Tries to convert a value of type `F` into type `T`.
 ///
-/// ```rust,ignore
+/// ```rust
+/// # use valust_utils::convert::try_into;
+/// # use valust::{Validate, Raw, error::display::ErrorDisplay};
+/// # use valust_derive::Valust;
+/// #
 /// #[derive(Valust)]
 /// struct Stringify {
-///     #[trans(try(A => fn(try_into::<B>)))]
-///     num: Result<B, String>,
+///     #[trans(func(i32 => try(try_into)))]
+///     num: i8,
 /// }
 /// ```
 pub fn try_into<F: TryInto<T>, T>(f: F) -> Result<T, F::Error> {

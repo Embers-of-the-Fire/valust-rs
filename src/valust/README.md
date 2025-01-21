@@ -28,14 +28,14 @@ use valust_derive::Valust;
 #[forward_derive(Debug)]
 #[rename(UncheckedUsername)]
 pub struct Username(
-    #[trans(String => _0.trim().to_owned())]
-    #[valid((!_0.is_empty(), "username must not be empty"))]
+    #[trans(expr(String => _0.trim().to_owned()))]
+    #[valid(expr(!_0.is_empty(), "username must not be empty"))]
     pub String,
 );
 
 #[derive(Debug, Valust, PartialEq)]
 #[forward_derive(Debug)]
-#[post(user_id + (username.0.len() as u32) == magic_number)]
+#[post(user_id + (username.0.len() as u32) == *magic_number)]
 pub struct UserProfile {
     pub user_id: u32,
     #[forward]
