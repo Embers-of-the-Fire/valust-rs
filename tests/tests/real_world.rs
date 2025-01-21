@@ -14,7 +14,7 @@ fn real_world_test() -> Result<(), Box<dyn std::error::Error>> {
 
     #[derive(Debug, Valust, PartialEq)]
     #[forward_derive(Debug)]
-    #[post(user_id + (username.0.len() as u32) == magic_number)]
+    #[post(user_id + (username.0.len() as u32) == *magic_number)]
     pub struct UserProfile {
         pub user_id: u32,
         #[forward]

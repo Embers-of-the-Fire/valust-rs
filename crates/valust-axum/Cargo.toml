@@ -31,7 +31,8 @@ serde = { workspace = true, features = ["derive"] }
 valust-derive = { path = "../../src/valust-derive" }
 
 [features]
-default = ["json", "form", "sonic", "yaml", "toml", "xml", "msgpack", "cbor", "ron"]
+# default = ["json", "form", "sonic", "yaml", "toml", "xml", "msgpack", "cbor", "ron"]
+default = []
 json = ["axum/json"]
 form = ["axum/form"]
 sonic = ["sonic-rs"]

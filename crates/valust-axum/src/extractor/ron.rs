@@ -25,9 +25,9 @@ use super::rejection::ValidateRejection;
 /// // we need to derive `Deserialize` to use `ValidRon`
 /// #[forward_derive(Deserialize)]
 /// struct CreateUser {
-///     #[valid(email.contains("@"))]
+///     #[valid(expr(email.contains("@")))]
 ///     email: String,
-///     #[valid(password.len() > 8)]
+///     #[valid(expr(password.len() > 8))]
 ///     password: String,
 /// }
 ///

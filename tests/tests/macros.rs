@@ -9,7 +9,7 @@ fn test_macro() {
     use valust::Validate;
 
     #[derive(Debug, Valust)]
-    #[post(_0 + _1 as f64 > 10.0)]
+    #[post(_0 + *_1 as f64 > 10.0)]
     pub struct W(
         #[trans(expr(f64 => _0.abs()))]
         #[valid(expr(_0 > 10.0, "Failed check"))]
@@ -33,7 +33,6 @@ fn test_nested() {
     #[derive(Debug, Valust)]
     #[forward_derive(Debug)]
     pub struct Inner {
-        #[display = true]
         #[valid(expr(code > 10.0, "code must be greater than 10.0"))]
         pub code: f64,
     }

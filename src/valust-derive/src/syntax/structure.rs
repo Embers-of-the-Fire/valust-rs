@@ -105,7 +105,44 @@ impl Structure {
             let mut #err_ident = ::valust::error::ValidationError::new();
         };
 
-        let validate = self
+        let (pre, post) = {
+            let fields = self.fields.iter().map(|f| f.name.name());
+
+            let pre = if !self.attrs.pre.is_empty() {
+                let (pre, pre_func) = self.attrs.gen_pre_expr(
+                    &self.name,
+                    self.fields
+                        .iter()
+                        .map(|field| (field.name.name(), field.get_raw_type())),
+                );
+                let pre_fields = fields.clone();
+                quote! {
+                    #pre_func
+                    #pre(#(&#pre_fields),*, &mut #err_ident);
+                }
+            } else {
+                quote! {}
+            };
+
+            let post = if !self.attrs.post.is_empty() {
+                let (post, post_func) = self.attrs.gen_post_expr(
+                    &self.name,
+                    self.fields
+                        .iter()
+                        .map(|field| (field.name.name(), &field.ty)),
+                );
+                let post_fields = fields;
+                quote! {
+                    #post_func
+                    #post(#(&#post_fields),*, &mut #err_ident);
+                }
+            } else {
+                quote! {}
+            };
+            (pre, post)
+        };
+
+        let field_validate = self
             .fields
             .iter()
             .map(|field| -> syn::Result<TokenStream> {
@@ -155,10 +192,20 @@ impl Structure {
 
                 fn validate(raw: Self::Raw) -> Result<Self, ::valust::error::ValidationError> {
                     #unpack_raw
+
                     #err_init
-                    #(#validate)*
+                    #pre
                     #err_ident.check()?;
+
+                    #err_init
+                    #(#field_validate)*
+                    #err_ident.check()?;
+
                     #unwrap_validated
+
+                    #err_init
+                    #post
+                    #err_ident.check()?;
 
                     Ok(#pack_raw)
                 }

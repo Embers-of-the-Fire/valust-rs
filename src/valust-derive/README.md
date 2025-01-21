@@ -93,8 +93,7 @@ use valust_utils::convert::parse_to;
 #[derive(Debug, Valust)]
 #[forward_derive(Debug)]
 pub struct Inner {
-    #[display = true]
-    #[valid(code > 10.0)]
+    #[valid(expr(code > 10.0, "code must be greater than 10.0"))]
     pub code: f64,
 }
 
@@ -103,8 +102,8 @@ pub struct Inner {
 pub struct Outer {
     #[forward]
     pub inner: Inner,
-    #[trans(String => extra.trim())]
-    #[trans(try(String => fn(parse_to::<u32>)))]
+    #[trans(expr(String => extra.trim()))]
+    #[trans(func(String => try(parse_to::<u32>)))]
     pub extra: u32,
 }
 ```
@@ -120,19 +119,25 @@ pub struct RawInner {
     pub code: f64,
 }
 #[automatically_derived]
-impl ::valust::Validate<Inner> for RawInner {
-    fn validate(
-        self,
-    ) -> ::std::result::Result<Inner, ::valust::error::ValidationError> {
-        #![allow(non_snake_case)]
-        let RawInner { code } = self;
-        let mut __valust_error_Inner = ::valust::error::ValidationError::new();
-        fn _valust_process_code(
+#[allow(
+    non_camel_case_types,
+    non_snake_case,
+    unused_variables,
+    non_upper_case_globals
+)]
+impl ::valust::Validate for Inner {
+    type Raw = RawInner;
+    fn validate(raw: Self::Raw) -> Result<Self, ::valust::error::ValidationError> {
+        let RawInner { code } = raw;
+        let mut valust_impl_err_Inner = ::valust::error::ValidationError::new();
+        valust_impl_err_Inner.check()?;
+        let mut valust_impl_err_Inner = ::valust::error::ValidationError::new();
+        fn valust_validate_code(
             code: f64,
-            _valust_error: &mut ::valust::error::ValidationError,
-        ) -> ::std::option::Option<f64> {
-            if !(code > 10.0) {
-                _valust_error.push_validate_error(
+            valust_err_code: &mut ::valust::error::ValidationError,
+        ) -> Option<f64> {
+            if !({ code > 10.0 }) {
+                valust_err_code.push_validate_error(
                     ::valust::error::validate::ValidateError {
                         field: "code",
                         path: format!("{}", "code"),
@@ -141,90 +146,101 @@ impl ::valust::Validate<Inner> for RawInner {
                         message: ::std::option::Option::Some(
                             "code must be greater than 10.0",
                         ),
-                        expression: "code > 10.0",
+                        expression: "{code > 10.0}",
                         type_name: "f64",
                     },
                 );
+                return None;
             }
-            ::std::option::Option::Some(code)
+            Some(code)
         }
-        let code: ::std::option::Option<f64> =
-            _valust_process_code(code, &mut __valust_error_Inner);
-        __valust_error_Inner.check()?;
-        let mut __valust_error_Inner = ::valust::error::ValidationError::new();
-        let code =
-            code.expect("Unexpected error occurred while processing field `code`");
-        __valust_error_Inner.check()?;
-        ::std::result::Result::Ok(Inner { code })
+        let code: Option<f64> = valust_validate_code(code, &mut valust_impl_err_Inner);
+        valust_impl_err_Inner.check()?;
+        let code = code.expect("Unexpected error occurred in processing field `code`");
+        let mut valust_impl_err_Inner = ::valust::error::ValidationError::new();
+        valust_impl_err_Inner.check()?;
+        Ok(Inner { code })
     }
 }
 
 #[automatically_derived]
 #[derive(Debug)]
 pub struct RawOuter {
-    pub inner: RawInner,
+    pub inner: ::valust::Raw<Inner>,
     pub extra: String,
 }
 #[automatically_derived]
-impl ::valust::Validate<Outer> for RawOuter {
-    fn validate(
-        self,
-    ) -> ::std::result::Result<Outer, ::valust::error::ValidationError> {
-        #![allow(non_snake_case)]
-        let RawOuter { inner, extra } = self;
-        let mut __valust_error_Outer = ::valust::error::ValidationError::new();
-        fn _valust_process_inner(
-            inner: RawInner,
-            _valust_error: &mut ::valust::error::ValidationError,
-        ) -> ::std::option::Option<Inner> {
-            let inner = match (<RawInner as ::valust::Validate<Inner>>::validate(inner))
-            {
-                Ok(value) => value,
-                Err(__valust_err_inner) => {
-                    _valust_error.extend_error("inner", __valust_err_inner);
+#[allow(
+    non_camel_case_types,
+    non_snake_case,
+    unused_variables,
+    non_upper_case_globals
+)]
+impl ::valust::Validate for Outer {
+    type Raw = RawOuter;
+    fn validate(raw: Self::Raw) -> Result<Self, ::valust::error::ValidationError> {
+        let RawOuter { inner, extra } = raw;
+        let mut valust_impl_err_Outer = ::valust::error::ValidationError::new();
+        valust_impl_err_Outer.check()?;
+        let mut valust_impl_err_Outer = ::valust::error::ValidationError::new();
+        fn valust_validate_inner(
+            inner: ::valust::Raw<Inner>,
+            valust_err_inner: &mut ::valust::error::ValidationError,
+        ) -> Option<Inner> {
+            let inner: Inner = match ::valust::Validate::validate(inner) {
+                Ok(v_valust) => v_valust,
+                Err(e_valust) => {
+                    valust_err_inner.extend_error("inner", e_valust);
                     return None;
                 }
             };
-            ::std::option::Option::Some(inner)
+            Some(inner)
         }
-        let inner: ::std::option::Option<Inner> =
-            _valust_process_inner(inner, &mut __valust_error_Outer);
-        fn _valust_process_extra(
+        let inner: Option<Inner> =
+            valust_validate_inner(inner, &mut valust_impl_err_Outer);
+        fn valust_validate_extra(
             extra: String,
-            _valust_error: &mut ::valust::error::ValidationError,
-        ) -> ::std::option::Option<u32> {
-            let extra = extra.trim();
-            let __format_err_clone_extra = extra.clone();
-            let extra = match (parse_to::<u32>(extra)) {
-                Ok(value) => value,
-                Err(__valust_err_extra) => {
-                    _valust_error.push_transform_error(
-                        ::valust::error::transform::TransformError {
-                            field: "extra",
-                            path: format!("{}", "extra"),
-                            value: format!("(String) {:?}", __format_err_clone_extra),
-                            cause: ::std::boxed::Box::new(__valust_err_extra),
-                            message: ::std::option::Option::None,
-                            expression: "parse_to :: < u32 > (extra)",
-                            source_type_name: "String",
-                            target_type_name: "u32",
-                        },
-                    );
-                    return None;
+            valust_err_extra: &mut ::valust::error::ValidationError,
+        ) -> Option<u32> {
+            let extra = ({ extra.trim() });
+            let extra = {
+                let valust_format_err_clone_extra = extra.clone();
+                match ((parse_to::<u32>)(extra)) {
+                    ::std::result::Result::Ok(valust_v) => valust_v,
+                    ::std::result::Result::Err(valust_trans_err_cause) => {
+                        valust_err_extra.push_transform_error(
+                            ::valust::error::transform::TransformError {
+                                field: "extra",
+                                path: format!("{}", "extra"),
+                                value: format!(
+                                    "(String) {:?}",
+                                    valust_format_err_clone_extra
+                                ),
+                                cause: ::std::boxed::Box::new(valust_trans_err_cause),
+                                message: ::std::option::Option::Some(
+                                    "`extra`'s transform expression fails",
+                                ),
+                                expression: "(parse_to :: < u32 >) (extra)",
+                                source_type_name: "String",
+                                target_type_name: "<unknown>",
+                            },
+                        );
+                        return None;
+                    }
                 }
             };
-            ::std::option::Option::Some(extra)
+            Some(extra)
         }
-        let extra: ::std::option::Option<u32> =
-            _valust_process_extra(extra, &mut __valust_error_Outer);
-        __valust_error_Outer.check()?;
-        let mut __valust_error_Outer = ::valust::error::ValidationError::new();
+        let extra: Option<u32> =
+            valust_validate_extra(extra, &mut valust_impl_err_Outer);
+        valust_impl_err_Outer.check()?;
         let inner =
-            inner.expect("Unexpected error occurred while processing field `inner`");
+            inner.expect("Unexpected error occurred in processing field `inner`");
         let extra =
-            extra.expect("Unexpected error occurred while processing field `extra`");
-        __valust_error_Outer.check()?;
-        ::std::result::Result::Ok(Outer { inner, extra })
+            extra.expect("Unexpected error occurred in processing field `extra`");
+        let mut valust_impl_err_Outer = ::valust::error::ValidationError::new();
+        valust_impl_err_Outer.check()?;
+        Ok(Outer { inner, extra })
     }
 }
 ```

@@ -51,32 +51,35 @@ pub fn create_validate_error(
     }
 }
 
-// pub fn create_meta_validate_error(
-//     error_ident: &Ident,
-//     cause: Option<&Ident>,
-//     message: Option<&Expr>,
-// ) -> TokenStream {
-//     let cause = cause
-//         .map(|c| quote! { ::std::option::Option::Some(::std::boxed::Box::new(#c)) })
-//         .unwrap_or(quote! { ::std::option::Option::None });
-//     let message = message
-//         .map(|m| quote! { ::std::option::Option::Some(#m) })
-//         .unwrap_or(quote! { ::std::option::Option::None });
+/// Output
+///
+/// ```rust,ignore
+/// error.push_validate_error(ValidateError { .. })
+/// ```
+pub fn create_meta_validate_error(
+    error_ident: &Ident,
+    message: Option<String>,
+    expr: impl ToTokens,
+) -> TokenStream {
+    let message = message
+        .map(|m| quote! { ::std::option::Option::Some(#m) })
+        .unwrap_or(quote! { ::std::option::Option::None });
+    let expr_text = expr.to_token_stream().to_string();
 
-//     quote! {
-//         #error_ident.push_validate_error(
-//             ::valust::error::validate::ValidateError {
-//                 field: "<meta>",
-//                 path: format!("<meta>"),
-//                 value: format!("<meta>"),
-//                 cause: #cause,
-//                 message: #message,
-//                 expression: "<meta>",
-//                 type_name: "<meta>",
-//             }
-//         );
-//     }
-// }
+    quote! {
+        #error_ident.push_validate_error(
+            ::valust::error::validate::ValidateError {
+                field: "<meta>",
+                path: format!("<meta>"),
+                value: format!("<meta>"),
+                cause: ::std::option::Option::None,
+                message: #message,
+                expression: #expr_text,
+                type_name: "<meta>",
+            }
+        )
+    }
+}
 
 /// Output
 ///
