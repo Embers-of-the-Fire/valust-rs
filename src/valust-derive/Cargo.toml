@@ -2,6 +2,7 @@
 name = "valust-derive"
 keywords = ["validator", "data", "macro", "derive"]
 description = "A derive macro for the Valust crate"
+include = ["src/**/*", "README.md", ".gitignore", "valid-utils.md", "trans-utils.md"]
 
 version.workspace = true
 edition.workspace = true

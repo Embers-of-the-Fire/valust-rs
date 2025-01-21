@@ -5,14 +5,18 @@ use syn::parse::ParseStream;
 mod expr;
 mod func;
 mod regex;
+#[cfg(feature = "regex-utils")]
 mod regex_alias;
 
 pub const VALID_COMMANDS: &[&dyn ValidCommand] = &[
     &regex::RegexCommand,
     &expr::ExprCommand,
     &func::FuncCommand,
+    #[cfg(feature = "regex-utils")]
     &regex_alias::EmailCommand,
+    #[cfg(feature = "regex-utils")]
     &regex_alias::UrlCommand,
+    #[cfg(feature = "regex-utils")]
     &regex_alias::UsernameCommand,
 ];
 
