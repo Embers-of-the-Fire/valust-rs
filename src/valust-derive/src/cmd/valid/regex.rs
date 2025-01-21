@@ -1,4 +1,4 @@
-use proc_macro2::TokenStream;
+use proc_macro2::{Span, TokenStream};
 use quote::{ToTokens, format_ident, quote};
 use syn::parse::ParseStream;
 use syn::spanned::Spanned;
@@ -38,16 +38,7 @@ struct RegexHandler {
 
 impl ValidHandler for RegexHandler {
     fn gen_validator_expr(&self, field: &Ident) -> TokenStream {
-        let regex = &self.regex;
-        let regex_name =
-            format_ident!("valust_valid_regex_{}", field, span = self.regex.span());
-
-        quote! {{
-            static #regex_name: ::std::sync::LazyLock<::valust::regex::Regex> = ::std::sync::LazyLock::new(|| {
-                ::valust::regex::Regex::new(#regex).unwrap()
-            });
-            #regex_name.is_match(&#field)
-        }}
+        gen_regex_expr(field, &self.regex, self.regex.span())
     }
 
     fn message(&self, field: &Ident) -> Option<String> {
@@ -64,4 +55,19 @@ impl ValidHandler for RegexHandler {
     fn is_fallible(&self) -> bool {
         false
     }
+}
+
+pub(super) fn gen_regex_expr(
+    field: &Ident,
+    regex: impl ToTokens,
+    span: Span,
+) -> TokenStream {
+    let regex_name = format_ident!("valust_valid_regex_{}", field, span = span);
+
+    quote! {{
+        static #regex_name: ::std::sync::LazyLock<::valust::regex::Regex> = ::std::sync::LazyLock::new(|| {
+            ::valust::regex::Regex::new(#regex).unwrap()
+        });
+        #regex_name.is_match(&#field)
+    }}
 }

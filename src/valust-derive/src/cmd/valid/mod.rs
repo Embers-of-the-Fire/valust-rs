@@ -2,6 +2,7 @@ use proc_macro2::TokenStream;
 use syn::Ident;
 use syn::parse::ParseStream;
 
+mod color;
 mod expr;
 mod func;
 mod regex;
@@ -18,6 +19,7 @@ pub const VALID_COMMANDS: &[&dyn ValidCommand] = &[
     &regex_alias::UrlCommand,
     #[cfg(feature = "regex-utils")]
     &regex_alias::UsernameCommand,
+    &color::ColorCommand,
 ];
 
 pub trait ValidCommand {

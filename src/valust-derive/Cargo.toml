@@ -30,10 +30,11 @@ valust-utils = { path = "../../crates/valust-utils" }
 [features]
 default = []
 regex = []
-regex-utils = ["regex", "dep:valust-regex-utils"]
+regex-utils = ["dep:valust-regex-utils"]
 email = []
 url = []
 username = []
+color = []
 
 [lints]
 workspace = true

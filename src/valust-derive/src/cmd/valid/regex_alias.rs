@@ -1,6 +1,5 @@
 use paste::paste;
 use proc_macro2::TokenStream;
-use quote::{format_ident, quote};
 use syn::Ident;
 use syn::parse::ParseStream;
 
@@ -41,16 +40,7 @@ macro_rules! __valust_regex_alias {
                 }
 
                 fn gen_validator_expr(&self, field: &Ident) -> TokenStream {
-                    let regex = $reg;
-                    let regex_name =
-                        format_ident!(concat!("valust_valid_", stringify!($ident), "_{}"), field, span = field.span());
-
-                    quote! {{
-                        static #regex_name: ::std::sync::LazyLock<::valust::regex::Regex> = ::std::sync::LazyLock::new(|| {
-                            ::valust::regex::Regex::new(#regex).unwrap()
-                        });
-                        #regex_name.is_match(&#field)
-                    }}
+                    super::regex::gen_regex_expr(field, $reg, field.span())
                 }
             }
         }
