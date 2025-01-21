@@ -26,62 +26,176 @@ one or more `trans` have the type of the first `transformer` in the first
 [`forward` field](#forwarding-a-field).
 
 The default naming pattern of the _raw_ data struct is `RawXXX`. To override it,
-use the [`rename` struct attribute](#structure-attributes).
+use the [`rename` struct attribute](#rename).
 
 ## Syntax
 
 ### Field Attributes
 
-| Name      | Syntax                            | Description                                                                                                                                                 | Example                                  |
-| --------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| `valid`   | `valid(<validator>)`              | [Validator](#validator-expression), uses _raw_ data as input.                                                                                               | `valid(a > 10)`                          |
-| `trans`   | `trans(<transformer>)`            | [Transformer](#transformer-expression), converts _raw_ data to _transformed_ data.                                                                          | `trans(try(String => s.parse::<u32>()))` |
-| `forward` | `forward`                         | [Forward the field](#forwarding-a-field) and uses it's validator to validate the field. itself.                                                             | `forward`                                |
-| `display` | `display = bool`, `display(bool)` | Whether to display the value when an error occurs. Enabled by default. <br /> [**Performance issues.**](#performance-issues-when-displaying-error-messages) | `display = false`                        |
+#### `valid`
+
+|             |                                   |
+| ----------- | --------------------------------- |
+| Syntax      | `valid(<valid exprs>)`            |
+| Description | Add a validator to check a field. |
+| Example     | `#[valid(expr(a > 10))]`          |
+
+**Reference:** [valid expr](#validator-expression)
+
+#### `trans`
+
+|             |                                         |
+| ----------- | --------------------------------------- |
+| Syntax      | `trans(<trans exprs>)`                  |
+| Description | Add a transformer to modify a field.    |
+| Example     | `#[trans(expr(try(a.parse::<u32>())))]` |
+
+**Reference:** [trans expr](#transformer-expression)
+
+#### `forward`
+
+|             |                                           |
+| ----------- | ----------------------------------------- |
+| Syntax      | `forward`                                 |
+| Description | [Forward](#forwarding-a-field) the field. |
+| Example     | `#[forward]`                              |
 
 ### Structure Attributes
 
-| Name             | Syntax                              | Description                                                                                   | Example                     |
-| ---------------- | ----------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------- |
-| `forward_derive` | `forward_derive(Ident)`             | Add derive macros for the _raw_ data struct.                                                  | `forward_derive(Debug)`     |
-| `pre`            | `pre(<validator>)`                  | Pre-validator, which uses _raw_ data as input.                                                | `pre(a > 10, b + c != 0.0)` |
-| `post`           | `post(<validator>)`                 | Post-validator, which uses _validated_ data as input.                                         | `post(a > 10)`              |
-| `rename`         | `rename = "Ident"`, `rename(Ident)` | Rename the output _raw_ data struct. <br /> [**Why we need `rename` ?**](#why-we-need-rename) | `rename(Original)`          |
+#### `rename`
+
+|             |                                                            |
+| ----------- | ---------------------------------------------------------- |
+| Syntax      | `rename(<ident>)` or `rename = "<ident>"`(not recommended) |
+| Description | [Rename](#why-we-need-rename) the _raw_ data structure.    |
+| Example     | `#[rename(RawData)]` or `#[rename = "RawData"]`            |
+
+#### `forward_derive`
+
+|             |                                                     |
+| ----------- | --------------------------------------------------- |
+| Syntax      | `forward_derive(<derive-items>)`                    |
+| Description | Add `derive` attribute to the _raw_ data structure. |
+| Example     | `#[forward_derive(Debug, Clone)]`                   |
+
+#### `pre`
+
+|             |                                                           |
+| ----------- | --------------------------------------------------------- |
+| Syntax      | `pre(<struct-valid-expr>)`                                |
+| Description | Add struct-level validator before all field validators.   |
+| Example     | `#[pre((magic1 + magic2 == 10, "invalid magic number"))]` |
+
+**Reference:** [struct-valid-expr](#struct-level-validator-expression)
+
+#### `post`
+
+|             |                                                            |
+| ----------- | ---------------------------------------------------------- |
+| Syntax      | `post(<struct-valid-expr>)`                                |
+| Description | Add struct-level validator after all field validators.     |
+| Example     | `#[post((magic1 + magic2 == 10, "invalid magic number"))]` |
+
+**Reference:** [struct-valid-expr](#struct-level-validator-expression)
 
 ### Special Expressions
 
-#### Validator Expression
+#### Struct-level Validator Expression
 
 - Plain validator:
-  - Syntax: `valid(<expr>)`
-  - Example: `valid(a > 10)`
+  - Syntax: `<expr>`
+  - Example: `a > 10`
+  - Full attr: `#[pre(a > 10)]`
 - Validator with custom message:
-  - Syntax: `valid((<expr>, <msg>))`
-  - Example: ``valid((b != 0, "`b` must be non-zero"))``
-- Fallible validator:
-  - Syntax: `valid(try(<expr>))`
-  - Example: `valid(try(s.parse::<u32>() > 10))`
-- Fallible validator with message:
-  - Syntax: `valid(try(<expr>, <msg>))`
-  - Example: ``valid(try(s.parse::<u32>() > 10, "`s` must be non-zero-string))``
-- Regex validator: ([feature `regex`](#regex-validator))
-  - Syntax: `valid(regex(<regex text>))`
-  - Example: `valid(regex(r"^\d{4}-\d{2}-\d{2}$"))`
-- Regex validator with message: ([feature `regex`](#regex-validator))
-  - Syntax: `valid(regex(<regex text>, <msg>))`
-  - Example: `valid(regex(r"^\d{4}-\d{2}-\d{2}$", "invalid date syntax"))`
+  - Syntax: `(<expr>, <msg>)`
+  - Example: ``(b != 0, "`b` must be non-zero")``
+  - Full attr: ``#[pre(b != 0, "`b` must be non-zero")]``
+
+#### Validator Expression
+
+##### `valid(expr)`
+
+**Syntax:**
+- **Infallible:** `expr(<expr>, <msg>?)`
+- **Fallible:** `expr(try(<expr>), <msg>?)`
+
+**Description:**
+This will directly insert the expression into the validate function.
+Note that all variables is passed by-value, so if you do not want to
+consume them, explicitly using a reference.
+
+**Example:**
+- Basic: `#[valid(expr(a > 10))]`
+- With message: ``#[valid(expr(a > 10, "invalid `a`"))]``
+- Fallible: `#[valid(expr(try(<some fallible expr>)))]`
+
+##### `valid(func)`
+
+**Syntax:**
+- **Infallible:** `func(<func-name>, <msg>?)`
+- **Fallible:** `func(try(<func-name>), <msg>?)`
+
+**Description:**
+You can also pass function-like expressions like closures.
+The expanded code will be like `(<func>)(&<field>)`.
+The function must accept a single value by-ref.
+
+**Example:**
+- Basic: `#[valid(func(|a| a > 10))]`
+- Fallible `#[valid(func( |s| s.parse::<u8>().map(|t| t > 10) ))]`
+
+##### `valid(regex)`
+
+**Syntax:**
+`regex(<regex-expr>, <msg>?)`
+
+**Description:**
+The regex backend is [`regex::Regex`][regex].
+
+**`Sync` & `Send`:**
+The regex state machine is wrapped in a [`std::sync::LazyLock`][lazy-lock]
+and will be initialized as a `static` item inside the impl block.
+
+[regex]: https://docs.rs/regex/latest/regex/struct.Regex.html
+[lazy-lock]: https://doc.rust-lang.org/std/sync/struct.LazyLock.html
+
+**Example:**
+- Basic: `#[valid(regex("\d{4}-\d{2}-\d{2}"))]`
+- With message: `#[valid(regex("\d{4}-\d{2}-\d{2}", "invalid date"))]`
 
 #### Transformer Expression
 
-- Plain transformer:
-  - Syntax: `trans(Type => <expr>)`
-  - Example: `trans(String => s.trim())`
-- Fallible transformer:
-  - Syntax: `trans(try(Type => <expr>))`
-  - Example: `trans(try(String => s.parse::<u32>()))`
-- Fallible transformer with message:
-  - Syntax: `trans(try(Type => <expr>, <msg>))`
-  - Example: `trans(try(String => s.parse::<u32>(), "fail to parse number"))`
+##### `trans(expr)`
+
+**Syntax:**
+`expr(<in-type>? => <expr> => <out-type>?)`
+- **Infallible:** `<expr> = <any valid expression>`
+- **Fallible:** `<expr> = try(...)`
+
+**Description:**
+Both `in-type` and `out-type` could be omitted.
+The two type could provide more information for `rustc`'s type inference.
+Note that the ever first `in-type` will be the _raw_ field type.
+
+**Example:**
+- Basic: `#[trans(expr(a + 1))]`
+- Changing type: `#[trans(expr(String => try(s.parse::<u8>())))]`
+
+##### `trans(func)`
+
+**Syntax:**
+`func(<in-type>? => <func> => <out-type>?)`
+- **Infallible:** `<func> = <any valid func-expr>`
+- **Fallible:** `<func> = try(...)`
+
+**Description:**
+Both `in-type` and `out-type` could be omitted.
+The two type could provide more information for `rustc`'s type inference.
+Note that the ever first `in-type` will be the _raw_ field type.
+
+**Example:**
+- Basic: `#[trans(func(|a| a + 1))]`
+- Changing type: `#[trans(func(String => try(|s| s.parse::<u8>())))]`
 
 ## Example
 
