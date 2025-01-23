@@ -16,8 +16,15 @@ convert_case = { workspace = true, optional = true }
 sealed = { workspace = true }
 
 [dev-dependencies]
-valust-derive = { path = "../../src/valust-derive" }
-valust = { path = "../../src/valust" }
+valust-derive = { path = "../../src/valust-derive", features = [
+    "regex",
+    "regex-utils",
+    "email",
+    "url",
+    "username",
+    "color",
+] }
+valust = { path = "../../src/valust", features = ["regex"] }
 
 [features]
 default = ["casing"]

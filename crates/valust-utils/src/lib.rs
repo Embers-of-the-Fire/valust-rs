@@ -2,6 +2,7 @@
 
 pub mod convert;
 pub mod dangerous;
+pub mod net;
 pub mod numeric;
 pub mod stream;
 
