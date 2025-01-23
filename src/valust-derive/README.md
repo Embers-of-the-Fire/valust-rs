@@ -113,89 +113,11 @@ use the [`rename` struct attribute](#rename).
 
 #### Validator Expression
 
-##### `valid(expr)`
-
-**Syntax:**
-- **Infallible:** `expr(<expr>, <msg>?)`
-- **Fallible:** `expr(try(<expr>), <msg>?)`
-
-**Description:**
-This will directly insert the expression into the validate function.
-Note that all variables is passed by-value, so if you do not want to
-consume them, explicitly using a reference.
-
-**Example:**
-- Basic: `#[valid(expr(a > 10))]`
-- With message: ``#[valid(expr(a > 10, "invalid `a`"))]``
-- Fallible: `#[valid(expr(try(<some fallible expr>)))]`
-
-##### `valid(func)`
-
-**Syntax:**
-- **Infallible:** `func(<func-name>, <msg>?)`
-- **Fallible:** `func(try(<func-name>), <msg>?)`
-
-**Description:**
-You can also pass function-like expressions like closures.
-The expanded code will be like `(<func>)(&<field>)`.
-The function must accept a single value by-ref.
-
-**Example:**
-- Basic: `#[valid(func(|a| a > 10))]`
-- Fallible `#[valid(func( |s| s.parse::<u8>().map(|t| t > 10) ))]`
-
-##### `valid(regex)`
-
-**Syntax:**
-`regex(<regex-expr>, <msg>?)`
-
-**Description:**
-The regex backend is [`regex::Regex`][regex].
-
-**`Sync` & `Send`:**
-The regex state machine is wrapped in a [`std::sync::LazyLock`][lazy-lock]
-and will be initialized as a `static` item inside the impl block.
-
-[regex]: https://docs.rs/regex/latest/regex/struct.Regex.html
-[lazy-lock]: https://doc.rust-lang.org/std/sync/struct.LazyLock.html
-
-**Example:**
-- Basic: `#[valid(regex("\d{4}-\d{2}-\d{2}"))]`
-- With message: `#[valid(regex("\d{4}-\d{2}-\d{2}", "invalid date"))]`
+[**Reference**](./valid-utils.md)
 
 #### Transformer Expression
 
-##### `trans(expr)`
-
-**Syntax:**
-`expr(<in-type>? => <expr> => <out-type>?)`
-- **Infallible:** `<expr> = <any valid expression>`
-- **Fallible:** `<expr> = try(...)`
-
-**Description:**
-Both `in-type` and `out-type` could be omitted.
-The two type could provide more information for `rustc`'s type inference.
-Note that the ever first `in-type` will be the _raw_ field type.
-
-**Example:**
-- Basic: `#[trans(expr(a + 1))]`
-- Changing type: `#[trans(expr(String => try(s.parse::<u8>())))]`
-
-##### `trans(func)`
-
-**Syntax:**
-`func(<in-type>? => <func> => <out-type>?)`
-- **Infallible:** `<func> = <any valid func-expr>`
-- **Fallible:** `<func> = try(...)`
-
-**Description:**
-Both `in-type` and `out-type` could be omitted.
-The two type could provide more information for `rustc`'s type inference.
-Note that the ever first `in-type` will be the _raw_ field type.
-
-**Example:**
-- Basic: `#[trans(func(|a| a + 1))]`
-- Changing type: `#[trans(func(String => try(|s| s.parse::<u8>())))]`
+[**Reference**](./trans-utils.md)
 
 ## Example
 

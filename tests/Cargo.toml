@@ -14,5 +14,5 @@ convert_case = { workspace = true }
 syn = { workspace = true }
 
 valust = { workspace = true, features = ["regex"] }
-valust-derive = { workspace = true, features = ["regex"] }
+valust-derive = { workspace = true, features = ["regex", "regex-utils", "email", "color"] }
 valust-utils = { workspace = true }

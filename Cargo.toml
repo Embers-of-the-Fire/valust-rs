@@ -43,11 +43,13 @@ ciborium = { version = "0.2.2" }
 ron = { version = "0.8" }
 mime = { version = "0.3.17" }
 regex = { version = "1.11.1" }
+paste = { version = "1.0.15" }
 
 # Internal dependencies
 valust = { path = "src/valust", version = "0.6.0" }
 valust-derive = { path = "src/valust-derive", version = "0.6.0" }
 valust-utils = { path = "crates/valust-utils", version = "0.6.0" }
+valust-regex-utils = { path = "crates/valust-regex-utils", version = "0.6.0" }
 valust-axum = { path = "crates/valust-axum", version = "0.6.0" }
 
 [workspace.lints.rust]

@@ -14,7 +14,7 @@ pub fn create_validate_error(
     field: &FieldName,
     cause: Option<&Ident>,
     message: Option<String>,
-    expr: impl ToTokens,
+    expr: impl AsRef<str>,
     ty: &Type,
     display: bool,
 ) -> TokenStream {
@@ -26,7 +26,7 @@ pub fn create_validate_error(
     let message = message
         .map(|m| quote! { ::std::option::Option::Some(#m) })
         .unwrap_or(quote! { ::std::option::Option::None });
-    let expr_text = expr.to_token_stream().to_string();
+    let expr_text = expr.as_ref();
     let type_text = ty.to_token_stream().to_string();
     let value_format = if display {
         let value_formatter = format!("({}) {{:?}}", type_text);

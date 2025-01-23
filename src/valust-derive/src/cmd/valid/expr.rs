@@ -38,7 +38,7 @@ impl ValidCommand for ExprCommand {
     }
 }
 
-pub struct ExprHandler {
+struct ExprHandler {
     expr: Expr,
     fallible: bool,
     message: Option<LitStr>,

@@ -2,6 +2,7 @@
 name = "valust-derive"
 keywords = ["validator", "data", "macro", "derive"]
 description = "A derive macro for the Valust crate"
+include = ["src/**/*", "README.md", ".gitignore", "valid-utils.md", "trans-utils.md"]
 
 version.workspace = true
 edition.workspace = true
@@ -18,7 +19,9 @@ proc-macro = true
 syn = { workspace = true }
 quote = { workspace = true }
 proc-macro2 = { workspace = true }
-either = { workspace = true }
+paste = { workspace = true }
+
+valust-regex-utils = { workspace = true, optional = true }
 
 [dev-dependencies]
 valust = { path = "../valust" }
@@ -27,6 +30,11 @@ valust-utils = { path = "../../crates/valust-utils" }
 [features]
 default = []
 regex = []
+regex-utils = ["dep:valust-regex-utils"]
+email = []
+url = []
+username = []
+color = []
 
 [lints]
 workspace = true
