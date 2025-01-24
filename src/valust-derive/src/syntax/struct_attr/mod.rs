@@ -1,6 +1,7 @@
 use proc_macro2::TokenStream;
-use syn::{Attribute, Expr, Ident, LitStr, Path, Type};
+use syn::{Attribute, Expr, Ident, LitStr, Meta, Path, Type};
 
+mod forward_attr;
 mod forward_derive;
 mod post;
 mod pre;
@@ -11,6 +12,7 @@ pub struct StructAttr {
     pub forward_derive: Vec<Path>,
     pub pre: Vec<(Expr, Option<LitStr>)>,
     pub post: Vec<(Expr, Option<LitStr>)>,
+    pub forward_attr: Vec<Meta>,
 }
 
 impl StructAttr {
@@ -21,6 +23,7 @@ impl StructAttr {
         let mut forward_derive: Vec<Path> = vec![];
         let mut pre: Vec<(Expr, Option<LitStr>)> = vec![];
         let mut post: Vec<(Expr, Option<LitStr>)> = vec![];
+        let mut forward_attr: Vec<Meta> = vec![];
 
         for attr in attrs {
             if attr.path().is_ident("rename") {
@@ -38,6 +41,10 @@ impl StructAttr {
             if attr.path().is_ident("post") {
                 post::parse_post(&attr.meta, &mut post)?;
             }
+
+            if attr.path().is_ident("forward_attr") {
+                forward_attr::parse_forward_attr(&attr.meta, &mut forward_attr)?;
+            }
         }
 
         Ok(Self {
@@ -45,6 +52,7 @@ impl StructAttr {
             forward_derive,
             pre,
             post,
+            forward_attr,
         })
     }
 

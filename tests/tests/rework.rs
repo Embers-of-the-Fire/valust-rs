@@ -1,5 +1,7 @@
 #[test]
 fn test_rework() {
+    #![allow(unused)]
+
     use valust::Validate;
     use valust_derive::Valust;
 
