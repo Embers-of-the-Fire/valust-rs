@@ -19,7 +19,7 @@ use syntax::structure::Structure;
 /// For full documentation, see the crates's README file.
 #[proc_macro_derive(
     Valust,
-    attributes(valid, trans, forward, pre, post, rename, forward_derive)
+    attributes(valid, trans, forward, forward_attr, pre, post, rename, forward_derive)
 )]
 pub fn valust_derive(item: TokenStream) -> TokenStream {
     let input = parse_macro_input!(item as DeriveInput);

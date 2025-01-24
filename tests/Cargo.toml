@@ -12,6 +12,8 @@ path = "lib.rs"
 [dependencies]
 convert_case = { workspace = true }
 syn = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
 
 valust = { workspace = true, features = ["regex"] }
 valust-derive = { workspace = true, features = ["regex", "regex-utils", "email", "color"] }

@@ -73,11 +73,18 @@ impl Structure {
             let decls = self.fields.iter().map(|t| {
                 let ty = t.get_raw_type();
                 let vis = &t.vis;
+                let attr = t.operations.iter().flat_map(|op| op.gen_raw_attr(&t.name));
                 if self.is_named {
                     let name = t.name.name();
-                    quote! { #vis #name: #ty }
+                    quote! {
+                        #(#attr)*
+                        #vis #name: #ty
+                    }
                 } else {
-                    quote! { #vis #ty }
+                    quote! {
+                        #(#attr)*
+                        #vis #ty
+                    }
                 }
             });
             let derives = &self.attrs.forward_derive;

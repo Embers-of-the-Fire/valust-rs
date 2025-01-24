@@ -859,6 +859,8 @@ name = "tests"
 version = "0.1.0"
 dependencies = [
  "convert_case",
+ "serde",
+ "serde_json",
  "syn",
  "valust",
  "valust-derive",
