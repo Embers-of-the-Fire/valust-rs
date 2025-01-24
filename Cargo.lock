@@ -1036,7 +1036,7 @@ checksum = "b3758f5e68192bb96cc8f9b7e2c2cfdabb435499a28499a42f8f984092adad4b"
 
 [[package]]
 name = "valust"
-version = "0.7.0"
+version = "0.8.0"
 dependencies = [
  "regex",
  "sealed",
@@ -1046,7 +1046,7 @@ dependencies = [
 
 [[package]]
 name = "valust-axum"
-version = "0.7.0"
+version = "0.8.0"
 dependencies = [
  "axum",
  "ciborium",
@@ -1064,7 +1064,7 @@ dependencies = [
 
 [[package]]
 name = "valust-derive"
-version = "0.7.0"
+version = "0.8.0"
 dependencies = [
  "paste",
  "proc-macro2",
@@ -1077,14 +1077,14 @@ dependencies = [
 
 [[package]]
 name = "valust-regex-utils"
-version = "0.7.0"
+version = "0.8.0"
 dependencies = [
  "regex",
 ]
 
 [[package]]
 name = "valust-utils"
-version = "0.7.0"
+version = "0.8.0"
 dependencies = [
  "convert_case",
  "sealed",

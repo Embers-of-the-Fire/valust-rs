@@ -1,5 +1,9 @@
 # Changelog
 
+## V 0.8.0
+
+- [Feat] Add `forward_attr` attribute.
+
 ## V 0.7.0
 
 - [Doc] Fix outdated macro syntax docs.
