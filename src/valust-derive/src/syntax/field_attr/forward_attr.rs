@@ -1,10 +1,10 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::{Ident, Meta, Token, Type, punctuated::Punctuated};
-
-use crate::syntax::field::FieldName;
+use syn::punctuated::Punctuated;
+use syn::{Ident, Meta, Token, Type};
 
 use super::{FieldCommand, FieldHandler};
+use crate::syntax::field::FieldName;
 
 pub struct ForwardAttr;
 

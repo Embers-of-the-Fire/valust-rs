@@ -4,12 +4,16 @@ use syn::{Ident, Meta, Type};
 use super::field::FieldName;
 
 mod forward;
+mod forward_attr;
 mod trans;
 mod valid;
-mod forward_attr;
 
-pub const FIELD_ATTRS: &[&dyn FieldCommand] =
-    &[&forward::Forward, &valid::Valid, &trans::Trans, &forward_attr::ForwardAttr];
+pub const FIELD_ATTRS: &[&dyn FieldCommand] = &[
+    &forward::Forward,
+    &valid::Valid,
+    &trans::Trans,
+    &forward_attr::ForwardAttr,
+];
 
 pub trait FieldCommand {
     fn ident(&self) -> &'static str;

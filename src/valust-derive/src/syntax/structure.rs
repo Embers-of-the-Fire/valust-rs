@@ -88,6 +88,7 @@ impl Structure {
                 }
             });
             let derives = &self.attrs.forward_derive;
+            let attrs = &self.attrs.forward_attr;
             let decl = if self.is_named {
                 quote! { { #(#decls,)* } }
             } else {
@@ -95,6 +96,7 @@ impl Structure {
             };
             quote! {
                 #[derive(#(#derives),*)]
+                #( #[#attrs] )*
                 #st_vis struct #raw_name #decl
             }
         };
