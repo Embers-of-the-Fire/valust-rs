@@ -30,6 +30,18 @@ use the [`rename` struct attribute](#rename).
 
 ## Syntax
 
+### Generic Attributes
+
+These attributes can be used on either fields or the structure itself.
+
+#### `forward_attr`
+
+|             |                                                  |
+| ----------- | ------------------------------------------------ |
+| Syntax      | `forward_attr(<attribute>)`                      |
+| Description | Add external attribute to the _raw_ data type    |
+| Example     | `#[forward_attr(serde(rename_all="camelCase"))]` |
+
 ### Field Attributes
 
 #### `valid`
