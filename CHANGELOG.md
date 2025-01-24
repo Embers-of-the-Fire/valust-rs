@@ -1,5 +1,11 @@
 # Changelog
 
+## V 0.7.0
+
+- [Doc] Fix outdated macro syntax docs.
+- [Feat] Add built-in regex based utils.
+- [Feat] Add validator and transformer for IP address.
+
 ## V 0.6.0
 
 - [Feat] Add support for regex exprs.
